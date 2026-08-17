@@ -1,0 +1,35 @@
+[agent]
+  interval = "5s"
+  flush_interval = "5s"
+  hostname = "bench-vm"
+[[outputs.influxdb_v2]]
+  urls = ["http://${MON_PRIVATE_IP}:8086"]
+  token = "${INFLUX_TOKEN}"
+  organization = "bench"
+  bucket = "bench"
+[[inputs.cpu]]
+  percpu = false
+  totalcpu = true
+[[inputs.mem]]
+[[inputs.net]]
+[[inputs.netstat]]
+[[inputs.mysql]]
+  servers = ["${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${V1_HOST}:3306)/?tls=true"]
+  metric_version = 2
+  gather_innodb_metrics = true
+  gather_global_variables = false
+  gather_process_list = false
+  gather_table_io_waits = false
+  gather_index_io_waits = false
+  [inputs.mysql.tags]
+    arm = "v1"
+[[inputs.mysql]]
+  servers = ["${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${V2_HOST}:3306)/?tls=true"]
+  metric_version = 2
+  gather_innodb_metrics = true
+  gather_global_variables = false
+  gather_process_list = false
+  gather_table_io_waits = false
+  gather_index_io_waits = false
+  [inputs.mysql.tags]
+    arm = "v2"

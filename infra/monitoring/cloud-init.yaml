@@ -1,0 +1,102 @@
+#cloud-config
+# Monitoring VM: InfluxDB 2.x + Grafana + Telegraf (inputs.mysql for both arms, inputs.cpu/net for self).
+# Bench VM telegraf pushes to this InfluxDB as well.
+package_update: true
+packages: [curl, gnupg, apt-transport-https, software-properties-common, jq]
+write_files:
+  - path: /opt/mon/env
+    permissions: '0600'
+    content: |
+      INFLUX_ORG=bench
+      INFLUX_BUCKET=bench
+      INFLUX_TOKEN=__INFLUX_TOKEN__
+      INFLUX_ADMIN_PASSWORD=__INFLUX_ADMIN_PASSWORD__
+      MYSQL_USER=__MYSQL_USER__
+      MYSQL_PASSWORD=__MYSQL_PASSWORD__
+      MYSQL_V1_HOST=__MYSQL_V1_HOST__
+      MYSQL_V2_HOST=__MYSQL_V2_HOST__
+      GRAFANA_ADMIN_PASSWORD=__GRAFANA_ADMIN_PASSWORD__
+  - path: /opt/mon/telegraf.conf.tmpl
+    content: |
+      [agent]
+        interval = "5s"
+        flush_interval = "5s"
+        hostname = "monitoring"
+      [[outputs.influxdb_v2]]
+        urls = ["http://127.0.0.1:8086"]
+        token = "${INFLUX_TOKEN}"
+        organization = "${INFLUX_ORG}"
+        bucket = "${INFLUX_BUCKET}"
+      [[inputs.cpu]]
+        percpu = false
+        totalcpu = true
+      [[inputs.mem]]
+      [[inputs.net]]
+      [[inputs.mysql]]
+        servers = ["${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${MYSQL_V1_HOST}:3306)/?tls=true"]
+        metric_version = 2
+        gather_innodb_metrics = true
+        gather_global_variables = true
+        gather_process_list = false
+        [inputs.mysql.tags]
+          arm = "v1"
+      [[inputs.mysql]]
+        servers = ["${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${MYSQL_V2_HOST}:3306)/?tls=true"]
+        metric_version = 2
+        gather_innodb_metrics = true
+        gather_global_variables = true
+        gather_process_list = false
+        [inputs.mysql.tags]
+          arm = "v2"
+  - path: /opt/mon/grafana-datasource.yaml
+    content: |
+      apiVersion: 1
+      datasources:
+        - name: InfluxDB
+          type: influxdb
+          access: proxy
+          url: http://127.0.0.1:8086
+          jsonData:
+            version: Flux
+            organization: bench
+            defaultBucket: bench
+          secureJsonData:
+            token: __INFLUX_TOKEN__
+          isDefault: true
+  - path: /opt/mon/setup.sh
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+      set -euxo pipefail
+      set -a; . /opt/mon/env; set +a
+      # InfluxDB 2
+      curl -fsSL https://repos.influxdata.com/influxdata-archive.key | gpg --dearmor -o /etc/apt/keyrings/influxdata-archive.gpg
+      echo "deb [signed-by=/etc/apt/keyrings/influxdata-archive.gpg] https://repos.influxdata.com/debian stable main" > /etc/apt/sources.list.d/influxdata.list
+      # Grafana
+      curl -fsSL https://apt.grafana.com/gpg.key | gpg --dearmor -o /etc/apt/keyrings/grafana.gpg
+      echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" > /etc/apt/sources.list.d/grafana.list
+      apt-get update
+      DEBIAN_FRONTEND=noninteractive apt-get install -y influxdb2 influxdb2-cli telegraf grafana
+      systemctl enable --now influxdb
+      for i in $(seq 1 30); do curl -sf http://127.0.0.1:8086/health && break; sleep 2; done
+      influx setup --skip-verify --org "$INFLUX_ORG" --bucket "$INFLUX_BUCKET" --username admin --password "$INFLUX_ADMIN_PASSWORD" --token "$INFLUX_TOKEN" --retention 0 --force || true
+      envsubst < /opt/mon/telegraf.conf.tmpl > /etc/telegraf/telegraf.conf
+      systemctl enable --now telegraf
+      systemctl restart telegraf
+      sed -i "s#__INFLUX_TOKEN__#$INFLUX_TOKEN#" /opt/mon/grafana-datasource.yaml
+      cp /opt/mon/grafana-datasource.yaml /etc/grafana/provisioning/datasources/influx.yaml
+      mkdir -p /var/lib/grafana/dashboards /etc/grafana/provisioning/dashboards
+      cat > /etc/grafana/provisioning/dashboards/bench.yaml <<EOF
+      apiVersion: 1
+      providers:
+        - name: bench
+          folder: Benchmark
+          type: file
+          options:
+            path: /var/lib/grafana/dashboards
+      EOF
+      sed -i "s/^;admin_password = admin/admin_password = $GRAFANA_ADMIN_PASSWORD/" /etc/grafana/grafana.ini
+      systemctl enable --now grafana-server
+      echo MON_SETUP_DONE > /opt/mon/DONE
+runcmd:
+  - [bash, -c, "apt-get install -y gettext-base && /opt/mon/setup.sh > /var/log/mon-setup.log 2>&1"]

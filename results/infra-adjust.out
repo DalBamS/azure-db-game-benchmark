@@ -1,0 +1,55 @@
+2026-08-18T00:59:50.3224815+09:00 [mysqlbm-euson-v1] set innodb_buffer_pool_size=8589934592
+2026-08-18T01:00:12.9907751+09:00 [mysqlbm-euson-v1] storage-size=128
+2026-08-18T01:01:24.0754438+09:00 [mysqlbm-euson-v2] set innodb_buffer_pool_size=8589934592
+2026-08-18T01:01:42.8061818+09:00 [mysqlbm-euson-v2] storage-size=128
+2026-08-18T01:05:53.0259119+09:00 [v1] iops=5000 (same-IOPS cell)
+2026-08-18T01:07:02.4280498+09:00 [mysqlbm-euson-v1] enable HA=SameZone
+2026-08-18T01:07:09.6959691+09:00 [mysqlbm-euson-v1] WARNING: Enabling High-availability may result in a short downtime for the server based on your server configuration.
+2026-08-18T01:07:09.7168453+09:00 [mysqlbm-euson-v1] WARNING: IOPS is 5000 which is either your input or free(maximum) IOPS supported for your storage size and SKU.
+2026-08-18T01:07:11.1040194+09:00 [mysqlbm-euson-v1] ERROR: (AutoGrowDisabledNotSupportedForHA) It is not supported to disable autogrow for server mysqlbm-euson-v1 enabling HA.
+2026-08-18T01:07:11.1300154+09:00 [mysqlbm-euson-v1] Code: AutoGrowDisabledNotSupportedForHA
+2026-08-18T01:07:11.1551084+09:00 [mysqlbm-euson-v1] Message: It is not supported to disable autogrow for server mysqlbm-euson-v1 enabling HA.
+2026-08-18T01:07:14.1052169+09:00 {
+2026-08-18T01:07:14.1294463+09:00   "ha": {
+2026-08-18T01:07:14.1534621+09:00     "mode": "Disabled",
+2026-08-18T01:07:14.1789343+09:00     "replicationMode": "BinaryLog",
+2026-08-18T01:07:14.2006636+09:00     "standbyAvailabilityZone": "",
+2026-08-18T01:07:14.2234394+09:00     "state": "NotEnabled"
+2026-08-18T01:07:14.2440679+09:00   },
+2026-08-18T01:07:14.2649924+09:00   "name": "mysqlbm-euson-v1",
+2026-08-18T01:07:14.2879884+09:00   "sku": "Standard_E8ds_v5",
+2026-08-18T01:07:14.3090368+09:00   "state": "Ready",
+2026-08-18T01:07:14.3277710+09:00   "storage": {
+2026-08-18T01:07:14.3464166+09:00     "autoGrow": "Disabled",
+2026-08-18T01:07:14.3661543+09:00     "autoIoScaling": "Disabled",
+2026-08-18T01:07:14.3832522+09:00     "iops": 5000,
+2026-08-18T01:07:14.4020372+09:00     "logOnDisk": "Disabled",
+2026-08-18T01:07:14.4227141+09:00     "storageRedundancy": "LocalRedundancy",
+2026-08-18T01:07:14.4404442+09:00     "storageSizeGb": 128,
+2026-08-18T01:07:14.4607295+09:00     "storageSku": "Premium_LRS"
+2026-08-18T01:07:14.4866481+09:00   }
+2026-08-18T01:07:14.5068219+09:00 }
+2026-08-18T01:07:14.5256764+09:00 [mysqlbm-euson-v2] enable HA=SameZone
+2026-08-18T01:07:21.5038038+09:00 [mysqlbm-euson-v2] WARNING: Enabling High-availability may result in a short downtime for the server based on your server configuration.
+2026-08-18T01:07:21.5247180+09:00 [mysqlbm-euson-v2] WARNING: IOPS is 5000 which is either your input or free(maximum) IOPS supported for your storage size and SKU.
+2026-08-18T01:12:31.7423206+09:00 {
+2026-08-18T01:12:31.8218779+09:00   "ha": {
+2026-08-18T01:12:31.8832072+09:00     "mode": "SameZone",
+2026-08-18T01:12:31.9685365+09:00     "replicationMode": "BinaryLog",
+2026-08-18T01:12:32.0242979+09:00     "standbyAvailabilityZone": "1",
+2026-08-18T01:12:32.0731159+09:00     "state": "Healthy"
+2026-08-18T01:12:32.1106258+09:00   },
+2026-08-18T01:12:32.1718025+09:00   "name": "mysqlbm-euson-v2",
+2026-08-18T01:12:32.2052123+09:00   "sku": "Standard_E8ds_v6",
+2026-08-18T01:12:32.2365606+09:00   "state": "Ready",
+2026-08-18T01:12:32.2915130+09:00   "storage": {
+2026-08-18T01:12:32.3362985+09:00     "autoGrow": "Disabled",
+2026-08-18T01:12:32.3851439+09:00     "autoIoScaling": "Disabled",
+2026-08-18T01:12:32.4244184+09:00     "iops": 5000,
+2026-08-18T01:12:32.4587419+09:00     "logOnDisk": "Disabled",
+2026-08-18T01:12:32.4992084+09:00     "storageRedundancy": "LocalRedundancy",
+2026-08-18T01:12:32.5365393+09:00     "storageSizeGb": 128,
+2026-08-18T01:12:32.5716178+09:00     "storageSku": "PremiumV2_LRS"
+2026-08-18T01:12:32.5990583+09:00   }
+2026-08-18T01:12:32.6383322+09:00 }
+2026-08-18T01:12:32.6752044+09:00 done

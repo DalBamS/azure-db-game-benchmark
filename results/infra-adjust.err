@@ -1,0 +1,5 @@
+WARNING: Readonly attribute name will be ignored in class <class 'azure.mgmt.mysqlflexibleservers.models._models_py3.Configuration'>
+WARNING: IOPS is 5000 which is either your input or free(maximum) IOPS supported for your storage size and SKU.
+WARNING: Readonly attribute name will be ignored in class <class 'azure.mgmt.mysqlflexibleservers.models._models_py3.Configuration'>
+WARNING: IOPS is 5000 which is either your input or free(maximum) IOPS supported for your storage size and SKU.
+WARNING: IOPS is 5000 which is either your input or free(maximum) IOPS supported for your storage size and SKU.
