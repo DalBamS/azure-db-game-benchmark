@@ -9,3 +9,13 @@ C1,S1,5500,read_iops,3,3087.5199474778833,0,4.551892407623104,,,,
 C1,S1,5500,write_iops,3,1490.277701980632,2639.7072432461714,8.026908100186136,35.11115143814577,,,
 C1,S1,5500,bp_hit,3,0.9729954191433607,1,0.15803817376827328,0.0,,,
 C1,S1,5500,service_p99_us,3,29455,4215,60.06142075735212,2.0377267715557004,-89.18503744651964,"[-94.40153645654709, -84.29992177896972]",horizon lower (better); n=3<5 (below protocol baseline)
+C5,S1,5500,success_tps,1,5500.081182430353,5500.007241746896,,,,,insufficient pairs for effect/CI
+C5,S1,5500,p50_us,1,576,473,,,,,insufficient pairs for effect/CI
+C5,S1,5500,p95_us,1,15207,3287,,,,,insufficient pairs for effect/CI
+C5,S1,5500,p99_us,1,55007,3691,,,,,insufficient pairs for effect/CI
+C5,S1,5500,p999_us,1,106687,4267,,,,,insufficient pairs for effect/CI
+C5,S1,5500,error_rate,1,0,0,,,,,insufficient pairs for effect/CI
+C5,S1,5500,read_iops,1,1285.4288851762303,0.6016645692970697,,,,,
+C5,S1,5500,write_iops,1,1748.2183503395274,2433.9365154311736,,,,,
+C5,S1,5500,bp_hit,1,0.9884395810986631,0.9999944681428082,,,,,
+C5,S1,5500,service_p99_us,1,54879,3541,,,,,insufficient pairs for effect/CI

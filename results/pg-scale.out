@@ -1,0 +1,88 @@
+{
+  "administratorLogin": "benchadmin",
+  "administratorLoginPassword": null,
+  "authConfig": {
+    "activeDirectoryAuth": "Disabled",
+    "passwordAuth": "Enabled",
+    "tenantId": null
+  },
+  "availabilityZone": "1",
+  "backup": {
+    "backupRetentionDays": 7,
+    "earliestRestoreDate": "2026-08-17T16:44:55.051370+00:00",
+    "geoRedundantBackup": "Disabled"
+  },
+  "cluster": null,
+  "createMode": null,
+  "dataEncryption": {
+    "geoBackupEncryptionKeyStatus": null,
+    "geoBackupKeyUri": null,
+    "geoBackupUserAssignedIdentityId": null,
+    "primaryEncryptionKeyStatus": null,
+    "primaryKeyUri": null,
+    "primaryUserAssignedIdentityId": null,
+    "type": "SystemManaged"
+  },
+  "fullyQualifiedDomainName": "expa-pg.postgres.database.azure.com",
+  "highAvailability": {
+    "mode": "SameZone",
+    "standbyAvailabilityZone": "1",
+    "state": "Healthy"
+  },
+  "id": "/subscriptions/7784c8b4-64ba-4b09-bee8-ee6f8f9a7309/resourceGroups/rg-expa-pg-hz/providers/Microsoft.DBforPostgreSQL/flexibleServers/expa-pg",
+  "identity": null,
+  "location": "Australia East",
+  "maintenanceWindow": {
+    "customWindow": "Disabled",
+    "dayOfWeek": 0,
+    "startHour": 0,
+    "startMinute": 0
+  },
+  "minorVersion": "10",
+  "name": "expa-pg",
+  "network": {
+    "delegatedSubnetResourceId": null,
+    "privateDnsZoneArmResourceId": null,
+    "publicNetworkAccess": "Enabled"
+  },
+  "pointInTimeUtc": null,
+  "privateEndpointConnections": [],
+  "replica": {
+    "capacity": 5,
+    "promoteMode": null,
+    "promoteOption": null,
+    "replicationState": null,
+    "role": "Primary"
+  },
+  "replicaCapacity": 5,
+  "replicationRole": "Primary",
+  "resourceGroup": "rg-expa-pg-hz",
+  "sku": {
+    "name": "Standard_D16ds_v5",
+    "tier": "GeneralPurpose"
+  },
+  "sourceServerResourceId": null,
+  "state": "Ready",
+  "storage": {
+    "autoGrow": "Enabled",
+    "iops": 1100,
+    "storageSizeGb": 256,
+    "throughput": null,
+    "tier": "P15",
+    "type": "Premium_LRS"
+  },
+  "systemData": {
+    "createdAt": "2026-08-17T16:38:02.750626+00:00",
+    "createdBy": null,
+    "createdByType": null,
+    "lastModifiedAt": null,
+    "lastModifiedBy": null,
+    "lastModifiedByType": null
+  },
+  "tags": {
+    "owner": "euson",
+    "workload": "expA-pg-vs-horizondb"
+  },
+  "type": "Microsoft.DBforPostgreSQL/flexibleServers",
+  "version": "17"
+}

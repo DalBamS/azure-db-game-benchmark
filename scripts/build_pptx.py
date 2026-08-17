@@ -111,8 +111,27 @@ def outcome_rows(cell):
     return rows
 
 
+def overview_slide(an, exp_title, arm_desc):
+    s = section(f"{exp_title} — overview across cases", arm_desc + "  |  medians of gate-passing repetitions; Δ = geometric-mean paired change of second arm vs first with 95% bootstrap CI")
+    rows = [["Cell", "Rate/s", "pairs", "p50 A→B", "p95 A→B", "p99 A→B", "p99.9 A→B", "Δ p50 [CI]", "Δ p99 [CI]", "read IOPS A/B", "hit A/B"]]
+    for c in an["cells"]:
+        o = c["outcomes"]
+        def ab(k, kind="us"):
+            x = o.get(k, {})
+            return f"{fmt(x.get('v1_median'), kind)} → {fmt(x.get('v2_median'), kind)}"
+        def dci(k):
+            x = o.get(k, {})
+            if x.get("pct_change") is None:
+                return "-"
+            return f"{x['pct_change']:+.0f}% [{x['ci95'][0]:+.0f}, {x['ci95'][1]:+.0f}]"
+        rows.append([f"{c['case']}/{c['scenario']}", f"{c['rate']:,}", f"{c['n_pairs_usable']}/{c['n_pairs_total']}", ab("p50_us"), ab("p95_us"), ab("p99_us"), ab("p999_us"), dci("p50_us"), dci("p99_us"), ab("read_iops", "n"), ab("bp_hit", "ratio")])
+    table(s, 0.5, 1.5, 12.3, rows, col_widths=[0.9, 0.8, 0.6, 1.4, 1.4, 1.4, 1.5, 1.4, 1.4, 1.1, 0.9], size=10)
+    add_text(s, 0.5, 5.6, 12.3, 1.2, ["A = first arm, B = second arm (v1→v2 / postgres→horizon). C1 = 8 vCore + Same-zone HA, C5 = 16 vCore + Same-zone HA; same dataset, same offered load, same client.",
+                                      "Read as: negative Δ latency = B faster. CIs from 3 repetitions are wide; a CI that excludes 0 is a directional finding, not a precise magnitude."], 11, False, MUTED)
+
+
 def cell_slides(an, exp_title, chart_dir, arm_desc):
-    for cell in an["cells"]:
+    for ci, cell in enumerate(an["cells"]):
         A, B = cell["arms"]
         s = section(f"{exp_title} — {cell['case']} / {cell['scenario']} @ {cell['rate']:,}/s", f"{arm_desc}  |  usable pairs {cell['n_pairs_usable']}/{cell['n_pairs_total']} (10-min open-loop measurements, arms run concurrently)")
         table(s, 0.6, 1.5, 12.1, outcome_rows(cell), col_widths=[2.0, 1.6, 1.6, 1.4, 2.2, 0.8, 2.5], size=11)
@@ -132,8 +151,8 @@ def cell_slides(an, exp_title, chart_dir, arm_desc):
         if pngs:
             s2 = section(f"{exp_title} — {cell['case']} time series (client TPS / p99 vs server IOPS, same UTC axis)", "shaded = 10-minute measurement window; server IOPS from in-run status sampling (SHOW GLOBAL STATUS / pg_stat)")
             s2.shapes.add_picture(pngs[0], Inches(0.6), Inches(1.4), height=Inches(5.9))
-        if os.path.exists(lp):
-            s3 = section(f"{exp_title} — latency percentiles by cell (median of reps, whiskers = min/max)", "log scale; lower is better")
+        if os.path.exists(lp) and ci == len(an["cells"]) - 1:
+            s3 = section(f"{exp_title} — latency percentiles by cell (median of ALL reps incl. gate-failed ones, whiskers = min/max)", "log scale; lower is better; use the per-cell tables (gate-passing pairs only) for the estimates")
             s3.shapes.add_picture(lp, Inches(0.6), Inches(1.4), height=Inches(5.6))
         for kp in sorted(glob.glob(os.path.join(chart_dir, f"knee_{cell['case']}_*.png"))):
             s4 = section(f"{exp_title} — {cell['case']} knee search (closed-loop staircase)", "used only to pick the open-loop measurement rate (≈65% of the lower arm's knee); not a result table")
@@ -157,7 +176,8 @@ def main(expB_dir, expA_dir, out):
             items.append(f"Exp A {c['case']} @ {c['rate']:,}/s: HorizonDB vs PG p99 {fmt(p99['pct_change'],'pct') if p99 and p99['pct_change'] is not None else '-'} (CI {p99['ci95'] and f'[{p99['ci95'][0]:+.1f}%, {p99['ci95'][1]:+.1f}%]'}); usable pairs {c['n_pairs_usable']}/{c['n_pairs_total']}")
     items += ["All reported numbers come only from runs that passed the hard validity gates (dataset ≥ 2× buffer pool, physical reads > 0, client CPU < 60%, errors < 1%, steady state, server metrics aligned to the UTC window).",
               "3 repetitions per cell (protocol baseline is 5) — CIs are wide; treat effects as directional unless the CI excludes 0.",
-              "Exp A: HorizonDB's buffer cache (45 GB) exceeds the dataset — G1/G2 are soft-failed for HorizonDB and the comparison is 'storage-bound PG vs cache-resident HorizonDB' at the same offered load."]
+              "Exp A: HorizonDB's buffer cache (45 GB at 8 vCore, 90 GB at 16 vCore) exceeds the dataset — G1/G2 are soft-failed for HorizonDB; the comparison is 'storage-bound PG (P15 disk at 100% IOPS) vs cache-resident HorizonDB' at the same offered load. In C5, PG Flexible showed multi-second stalls in 2 of 3 reps (queue/latency gates failed → excluded), HorizonDB none.",
+              "Exp B: MySQL is storage-bound in both cases (16 vCore did not raise the knee); v2's median latency is consistently lower, but v2 showed a tail-latency degradation episode in the 3rd repetition of both C1 and C5 (dirty pages ↑, threads_running spikes) — root cause not established; needs a longer soak."]
     bullets(s, 0.6, 1.5, 12.1, 5.5, items, 14)
 
     s = section("Method — how validity was enforced", "traditional load-testing protocol + automated gates; pilots/smoke never appear in result tables")
@@ -181,6 +201,7 @@ def main(expB_dir, expA_dir, out):
                                     ["Dataset", "24.4 GiB (3.05× buffer pool)", "23.7 GiB (2.96× buffer pool)", "same generator/seed"],
                                     ["HA / zone", "SameZone / zone 1", "SameZone / zone 1", "controlled"],
                                     ["Network", "public endpoint + TLS from bench VM (D16ds_v5, same region)", "same", "controlled"]], col_widths=[2.2, 3.4, 3.4, 3.1], size=11)
+        overview_slide(b, "Exp B (MySQL SSD v1 vs v2)", "arms: v1 = Premium SSD v1, v2 = Premium SSD v2 (same-IOPS 5,000)")
         cell_slides(b, "Exp B (MySQL SSD v1 vs v2)", os.path.join(expB_dir, "charts"), "arms: v1 = Premium SSD v1, v2 = Premium SSD v2 (same-IOPS 5,000)")
     if a:
         s = section("Exp A environment & confound table", "Australia East; PostgreSQL 17; both public endpoint + TLS from bench VM (D16ds_v5, same region)")
@@ -191,6 +212,7 @@ def main(expB_dir, expA_dir, out):
                                     ["shared_buffers", "8 GB", "45,058 MB", "dataset (23 GiB) < HZ cache → G1/G2 soft-fail for HZ"],
                                     ["Version", "17.10", "17.9 (Azure HorizonDB)", "-"],
                                     ["Price", "list price per vCore-hour differs; see cost note", "", "report cost-normalised metric when billing data is available"]], col_widths=[2.2, 3.6, 3.6, 2.7], size=11)
+        overview_slide(a, "Exp A (PostgreSQL vs HorizonDB)", "arms: postgres = Flexible Server, horizon = HorizonDB")
         cell_slides(a, "Exp A (PostgreSQL vs HorizonDB)", os.path.join(expA_dir, "charts"), "arms: postgres = Flexible Server, horizon = HorizonDB")
 
     s = section("Limitations & next steps")

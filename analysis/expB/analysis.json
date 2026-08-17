@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-17T18:30:49.936022+00:00",
+ "generated_at": "2026-08-17T20:00:58.811049+00:00",
  "cells": [
   {
    "case": "C1",
@@ -265,6 +265,281 @@
      "ci95": [
       -42.85135934726417,
       157.38647709573067
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    }
+   },
+   "arms": [
+    "v1",
+    "v2"
+   ],
+   "n_pairs_total": 3,
+   "n_pairs_usable": 3
+  },
+  {
+   "case": "C5",
+   "scenario": "S1",
+   "rate": 5000,
+   "reps": {
+    "1": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.002468249572,
+      "p99_us": 23327,
+      "measure_from": "2026-08-17T18:37:52.475729646Z",
+      "measure_to": "2026-08-17T18:47:52.475833456Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.989305518152,
+      "p99_us": 21455,
+      "measure_from": "2026-08-17T18:37:53.173582207Z",
+      "measure_to": "2026-08-17T18:47:53.173665545Z"
+     }
+    },
+    "2": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.032123629146,
+      "p99_us": 25263,
+      "measure_from": "2026-08-17T19:13:28.282879795Z",
+      "measure_to": "2026-08-17T19:23:28.283424956Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.014453398419,
+      "p99_us": 22191,
+      "measure_from": "2026-08-17T19:13:28.800796264Z",
+      "measure_to": "2026-08-17T19:23:28.800861856Z"
+     }
+    },
+    "3": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.004531839732,
+      "p99_us": 24159,
+      "measure_from": "2026-08-17T19:45:02.227575199Z",
+      "measure_to": "2026-08-17T19:55:02.227831378Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.115981067431,
+      "p99_us": 94079,
+      "measure_from": "2026-08-17T19:45:02.830353161Z",
+      "measure_to": "2026-08-17T19:55:02.830435431Z"
+     }
+    }
+   },
+   "outcomes": {
+    "success_tps": {
+     "label": "Throughput (success TPS)",
+     "n": 3,
+     "v1_median": 5000.004531839732,
+     "v2_median": 5000.014453398419,
+     "v1_cv_pct": 0.00033115939806230537,
+     "v2_cv_pct": 0.0013413065121003038,
+     "pct_change": 0.0005374347371134292,
+     "ci95": [
+      -0.00035340234401104453,
+      0.0022289825336807567
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "p50_us": {
+     "label": "Latency p50 (us)",
+     "n": 3,
+     "v1_median": 3743,
+     "v2_median": 2281,
+     "v1_cv_pct": 4.781991381491869,
+     "v2_cv_pct": 11.50850659954665,
+     "pct_change": -33.61591076174908,
+     "ci95": [
+      -39.893475366178436,
+      -26.44937216136789
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
+    },
+    "p95_us": {
+     "label": "Latency p95 (us)",
+     "n": 3,
+     "v1_median": 19167,
+     "v2_median": 17119,
+     "v1_cv_pct": 0.9914936118246186,
+     "v2_cv_pct": 73.82020456266899,
+     "pct_change": 29.816167446744622,
+     "ci95": [
+      -12.636644175950629,
+      184.81765534512445
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "p99_us": {
+     "label": "Latency p99 (us)",
+     "n": 3,
+     "v1_median": 24159,
+     "v2_median": 22191,
+     "v1_cv_pct": 4.004918356753621,
+     "v2_cv_pct": 90.87379374572608,
+     "pct_change": 46.529513101645925,
+     "ci95": [
+      -12.160076000475007,
+      289.41595264704665
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "p999_us": {
+     "label": "Latency p99.9 (us)",
+     "n": 3,
+     "v1_median": 56735,
+     "v2_median": 28335,
+     "v1_cv_pct": 124.65499130161426,
+     "v2_cv_pct": 112.15059676697925,
+     "pct_change": -52.2475680753957,
+     "ci95": [
+      -93.90171724715317,
+      221.9441262007579
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "error_rate": {
+     "label": "Error rate",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "read_iops": {
+     "label": "Server read IOPS",
+     "n": 3,
+     "v1_median": 1657.8979743868297,
+     "v2_median": 1538.532682819005,
+     "v1_cv_pct": 5.031183214799238,
+     "v2_cv_pct": 23.069127583694115,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "write_iops": {
+     "label": "Server write IOPS",
+     "n": 3,
+     "v1_median": 2138.4351410872046,
+     "v2_median": 3242.2309453203384,
+     "v1_cv_pct": 1.9973492346127741,
+     "v2_cv_pct": 11.653288289564557,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "bp_hit": {
+     "label": "Buffer pool hit ratio",
+     "n": 3,
+     "v1_median": 0.9777512080726495,
+     "v2_median": 0.9788875484244924,
+     "v1_cv_pct": 0.11347653049522095,
+     "v2_cv_pct": 0.19691971121215265,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "service_p99_us": {
+     "label": "Service time p99 (us, excl. queue)",
+     "n": 3,
+     "v1_median": 23935,
+     "v2_median": 22047,
+     "v1_cv_pct": 2.1782189185666865,
+     "v2_cv_pct": 88.74758745183821,
+     "pct_change": 46.85227182482527,
+     "ci95": [
+      -8.62104695983753,
+      276.2147482765824
      ],
      "note": "CI includes 0; n=3<5 (below protocol baseline)"
     }

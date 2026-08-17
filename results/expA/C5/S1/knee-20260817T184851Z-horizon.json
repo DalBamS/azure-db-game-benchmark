@@ -1,0 +1,99 @@
+{
+ "captured_at": "2026-08-17T18:57:20.023514169Z",
+ "env": {
+  "variables": {
+   "azure.extensions": "",
+   "block_size": "8192",
+   "checkpoint_timeout": "200s",
+   "effective_cache_size": "90213MB",
+   "effective_io_concurrency": "1",
+   "fsync": "on",
+   "full_page_writes": "off",
+   "huge_pages": "try",
+   "innodb_buffer_pool_size": "94595186688",
+   "max_connections": "500",
+   "max_wal_size": "12GB",
+   "max_worker_processes": "16",
+   "random_page_cost": "2",
+   "server_version": "17.9 (Azure HorizonDB (1b3bcd789c4)(release))",
+   "shared_buffers": "90213MB",
+   "ssl": "on",
+   "synchronous_commit": "on",
+   "wal_compression": "pglz",
+   "wal_level": "replica",
+   "work_mem": "4MB"
+  },
+  "table_gib": {
+   "accounts": 3.274688720703125,
+   "bench_meta": 0.00002288818359375,
+   "game_sessions": 0.17083740234375,
+   "guild_members": 0.210479736328125,
+   "guilds": 0.1111602783203125,
+   "inventory": 20.33466339111328,
+   "leaderboard": 0.2592620849609375,
+   "match_results": 0.649444580078125,
+   "purchase_ledger": 0.27532958984375
+  },
+  "total_gib": 25.285888671875,
+  "approx_rows": {
+   "accounts": 2500422,
+   "bench_meta": 5,
+   "game_sessions": 1589793,
+   "guild_members": 2500000,
+   "guilds": 100000,
+   "inventory": 50000048,
+   "leaderboard": 2500000,
+   "match_results": 2576013,
+   "purchase_ledger": 1607431
+  },
+  "hostname": "",
+  "captured_at": "2026-08-17T18:48:51.46581985Z"
+ },
+ "knee_tps": 122550.85070815617,
+ "knee_workers": 256,
+ "label": "horizon",
+ "recommended_rate_65pct": 79658.05296030152,
+ "scenario": "S1",
+ "steps": [
+  {
+   "workers": 64,
+   "success_tps": 40473.31159662882,
+   "p50_us": 794,
+   "p99_us": 5127,
+   "error_rate": 0,
+   "read_iops": 15119.991816091557,
+   "write_iops": 0,
+   "host_cpu_max": 25.903203817314246
+  },
+  {
+   "workers": 128,
+   "success_tps": 80914.3750621896,
+   "p50_us": 467,
+   "p99_us": 5331,
+   "error_rate": 0,
+   "read_iops": 5589.224090131135,
+   "write_iops": 26845.67327787873,
+   "host_cpu_max": 53.197797543413806
+  },
+  {
+   "workers": 256,
+   "success_tps": 116150.66598597882,
+   "p50_us": 683,
+   "p99_us": 8239,
+   "error_rate": 0,
+   "read_iops": 934.0527734718825,
+   "write_iops": 0,
+   "host_cpu_max": 71.18971949702916
+  },
+  {
+   "workers": 384,
+   "success_tps": 122550.85070815617,
+   "p50_us": 1039,
+   "p99_us": 12567,
+   "error_rate": 0,
+   "read_iops": 106.71303596094857,
+   "write_iops": 0,
+   "host_cpu_max": 74.9147920927062
+  }
+ ]
+}

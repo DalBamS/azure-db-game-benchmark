@@ -1,6 +1,6 @@
 # v1 vs v2 paired analysis
 
-Generated 2026-08-17T18:30:49.936022+00:00
+Generated 2026-08-17T20:00:58.811049+00:00
 
 ## C1 / S1 / 5000 arrivals/s  (v1 vs v2)
 
@@ -26,3 +26,28 @@ Repetition gate summary:
 - rep 2 v2: ok=True tps=5000 p99=18511us azmon=True inv=True
 - rep 3 v1: ok=True tps=5000 p99=25199us azmon=True inv=True
 - rep 3 v2: ok=True tps=5000 p99=64607us azmon=True inv=True
+
+## C5 / S1 / 5000 arrivals/s  (v1 vs v2)
+
+pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: none)
+
+| Outcome | n | v1 median | v2 median | v1 CV% | v2 CV% | Δ% (v2 vs v1, geo-mean) | 95% CI | note |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| Throughput (success TPS) | 3 | 5,000.0 | 5,000.0 | 0.0003 | 0.0013 | +0.00% | [-0.00%, +0.00%] | CI includes 0; n=3<5 (below protocol baseline) |
+| Latency p50 (us) | 3 | 3,743.0 | 2,281.0 | 4.8 | 11.5 | -33.62% | [-39.89%, -26.45%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Latency p95 (us) | 3 | 19,167.0 | 17,119.0 | 0.9915 | 73.8 | +29.82% | [-12.64%, +184.82%] | CI includes 0; n=3<5 (below protocol baseline) |
+| Latency p99 (us) | 3 | 24,159.0 | 22,191.0 | 4.0 | 90.9 | +46.53% | [-12.16%, +289.42%] | CI includes 0; n=3<5 (below protocol baseline) |
+| Latency p99.9 (us) | 3 | 56,735.0 | 28,335.0 | 124.7 | 112.2 | -52.25% | [-93.90%, +221.94%] | CI includes 0; n=3<5 (below protocol baseline) |
+| Error rate | 3 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+| Server read IOPS | 3 | 1,657.9 | 1,538.5 | 5.0 | 23.1 | - | - |  |
+| Server write IOPS | 3 | 2,138.4 | 3,242.2 | 2.0 | 11.7 | - | - |  |
+| Buffer pool hit ratio | 3 | 0.9778 | 0.9789 | 0.1135 | 0.1969 | - | - |  |
+| Service time p99 (us, excl. queue) | 3 | 23,935.0 | 22,047.0 | 2.2 | 88.7 | +46.85% | [-8.62%, +276.21%] | CI includes 0; n=3<5 (below protocol baseline) |
+
+Repetition gate summary:
+- rep 1 v1: ok=True tps=5000 p99=23327us azmon=True inv=True
+- rep 1 v2: ok=True tps=5000 p99=21455us azmon=True inv=True
+- rep 2 v1: ok=True tps=5000 p99=25263us azmon=True inv=True
+- rep 2 v2: ok=True tps=5000 p99=22191us azmon=True inv=True
+- rep 3 v1: ok=True tps=5000 p99=24159us azmon=True inv=True
+- rep 3 v2: ok=True tps=5000 p99=94079us azmon=True inv=True
