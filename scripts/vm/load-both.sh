@@ -7,8 +7,8 @@ STAMP=$(ts)
 for arm in v1 v2; do
   dsnvar="DSN_$(echo $arm | tr a-z A-Z)"
   (
-    "$GB" schema -dsn "${!dsnvar}" && "$GB" reset -dsn "${!dsnvar}" &&
-    "$GB" load -dsn "${!dsnvar}" -accounts "$ACCOUNTS" -slots "$SLOTS" -profile-bytes "$PROF" -attrs-bytes "$ATTRS" -load-workers 24 -batch 400 -out "$RESULTS/load-$STAMP-$arm.json"
+    MYSQL_DSN="${!dsnvar}" "$GB" schema && MYSQL_DSN="${!dsnvar}" "$GB" reset &&
+    MYSQL_DSN="${!dsnvar}" "$GB" load -accounts "$ACCOUNTS" -slots "$SLOTS" -profile-bytes "$PROF" -attrs-bytes "$ATTRS" -load-workers 24 -batch 400 -out "$RESULTS/load-$STAMP-$arm.json"
   ) > "$RESULTS/load-$STAMP-$arm.log" 2>&1 &
 done
 wait

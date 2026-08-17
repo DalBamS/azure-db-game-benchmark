@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 type RunConfig struct {
@@ -110,6 +111,7 @@ type Runner struct {
 	Mix  *Mix
 	Log  func(string, ...any)
 	Env  *EnvSnapshot
+	Fetch StatusFetch // nil = MySQL SHOW GLOBAL STATUS
 }
 
 func classify(err error) string {
@@ -122,6 +124,10 @@ func classify(err error) string {
 	var me *mysql.MySQLError
 	if errors.As(err, &me) {
 		return fmt.Sprintf("mysql_%d", me.Number)
+	}
+	var pe *pgconn.PgError
+	if errors.As(err, &pe) {
+		return "pg_" + pe.Code
 	}
 	s := err.Error()
 	switch {
@@ -244,12 +250,14 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 		}
 	}
 
+	runNonce := uint64(time.Now().UnixNano())
 	var wg sync.WaitGroup
 	for i := 0; i < cfg.Workers; i++ {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
-			w := &Worker{ID: id, Rng: rand.New(rand.NewPCG(cfg.Seed+uint64(id)*7919, cfg.Seed^uint64(id))), Keys: NewKeyPicker(cfg.Accounts, cfg.HotKeys, cfg.HotProb, cfg.Seed+uint64(id)*104729), Slots: cfg.Slots}
+			// per-run entropy: request ids (uuids) must not repeat across runs, so mix wall-clock nanos into the seed
+			w := &Worker{ID: id, Rng: rand.New(rand.NewPCG(cfg.Seed+uint64(id)*7919+runNonce, cfg.Seed^uint64(id)^runNonce)), Keys: NewKeyPicker(cfg.Accounts, cfg.HotKeys, cfg.HotProb, cfg.Seed+uint64(id)*104729), Slots: cfg.Slots}
 			if cfg.Mode == "closed" {
 				for runCtx.Err() == nil {
 					execOne(w, conns[w.ID], time.Now())
@@ -266,7 +274,7 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 	}
 
 	// samplers
-	statusSampler := NewStatusSampler(r.DB, time.Duration(cfg.StatusEverySec)*time.Second)
+	statusSampler := NewStatusSampler(r.DB, r.Fetch, time.Duration(cfg.StatusEverySec)*time.Second)
 	statusSampler.Start(ctx)
 	host := NewHostSampler(5 * time.Second)
 	host.Start()

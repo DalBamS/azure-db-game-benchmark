@@ -5,6 +5,7 @@
 source "$(dirname "$0")/common.sh"
 CASE="$1"; SCEN="$2"; RATE="$3"; REPS="${4:-3}"; MEASURE="${5:-600}"; WORKERS="${6:-256}"; WARMUP="${7:-120}"; shift 7 || shift $#
 EXTRA="$*"
+declare -A pids
 ACCOUNTS=$(python3 -c "import json,glob;f=sorted(glob.glob('$RESULTS/load-*-v1.json'))[-1];print(json.load(open(f))['approx_rows'].get('accounts',0))")
 ACCOUNTS=${ACCOUNTS_OVERRIDE:-$ACCOUNTS}
 OUT="$RESULTS/$CASE/$SCEN/rate$RATE"; mkdir -p "$OUT"
@@ -14,7 +15,7 @@ for rep in $(seq 1 "$REPS"); do
   echo "$(ts) rep $rep start" | tee -a "$OUT/run-case.log"
   for arm in v1 v2; do
     dsnvar="DSN_$(echo $arm | tr a-z A-Z)"
-    "$GB" run -dsn "${!dsnvar}" -label "$arm" -scenario "$SCEN" -mode open -rate "$RATE" -workers "$WORKERS" -warmup "$WARMUP" -warmup-max 480 -measure "$MEASURE" \
+    MYSQL_DSN="${!dsnvar}" "$GB" run -label "$arm" -scenario "$SCEN" -mode open -rate "$RATE" -workers "$WORKERS" -warmup "$WARMUP" -warmup-max 480 -measure "$MEASURE" \
       -accounts "$ACCOUNTS" -slots "${SLOTS:-16}" -nic-bps "$NIC_BPS" $EXTRA -out "$OUT/rep$rep-$STAMP-$arm.json" > "$OUT/rep$rep-$STAMP-$arm.log" 2>&1 &
     pids[$arm]=$!
   done
@@ -26,7 +27,7 @@ for rep in $(seq 1 "$REPS"); do
   # invariants after each rep (G9)
   for arm in v1 v2; do
     dsnvar="DSN_$(echo $arm | tr a-z A-Z)"
-    "$GB" check -dsn "${!dsnvar}" -out "$OUT/rep$rep-$STAMP-$arm.invariants.json" 2>/dev/null
+    MYSQL_DSN="${!dsnvar}" "$GB" check -out "$OUT/rep$rep-$STAMP-$arm.invariants.json" 2>/dev/null
   done
   echo "$(ts) rep $rep done; cooldown 60s" | tee -a "$OUT/run-case.log"
   [ "$rep" -lt "$REPS" ] && sleep 60

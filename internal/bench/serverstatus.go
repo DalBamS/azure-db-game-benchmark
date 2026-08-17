@@ -26,8 +26,11 @@ type StatusSample struct {
 	Values map[string]uint64 `json:"v"`
 }
 
+type StatusFetch func(ctx context.Context, db *sql.DB) (map[string]uint64, error)
+
 type StatusSampler struct {
 	db       *sql.DB
+	fetch    StatusFetch
 	interval time.Duration
 	mu       sync.Mutex
 	samples  []StatusSample
@@ -36,8 +39,11 @@ type StatusSampler struct {
 	done     chan struct{}
 }
 
-func NewStatusSampler(db *sql.DB, interval time.Duration) *StatusSampler {
-	return &StatusSampler{db: db, interval: interval, stop: make(chan struct{}), done: make(chan struct{})}
+func NewStatusSampler(db *sql.DB, fetch StatusFetch, interval time.Duration) *StatusSampler {
+	if fetch == nil {
+		fetch = FetchStatus
+	}
+	return &StatusSampler{db: db, fetch: fetch, interval: interval, stop: make(chan struct{}), done: make(chan struct{})}
 }
 
 func FetchStatus(ctx context.Context, db *sql.DB) (map[string]uint64, error) {
@@ -93,7 +99,7 @@ func (s *StatusSampler) Start(ctx context.Context) {
 func (s *StatusSampler) sampleOnce(ctx context.Context) {
 	c, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
-	v, err := FetchStatus(c, s.db)
+	v, err := s.fetch(c, s.db)
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if err != nil {

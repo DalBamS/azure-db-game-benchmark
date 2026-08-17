@@ -8,7 +8,7 @@ ACCOUNTS=${ACCOUNTS_OVERRIDE:-$ACCOUNTS}
 STAMP=$(ts); OUT="$RESULTS/$CASE/$SCEN"; mkdir -p "$OUT"
 for arm in v1 v2; do
   dsnvar="DSN_$(echo $arm | tr a-z A-Z)"
-  "$GB" knee -dsn "${!dsnvar}" -label "$arm" -scenario "$SCEN" -steps "$STEPS" -step-sec "$STEPSEC" -accounts "$ACCOUNTS" -slots "${SLOTS:-16}" -nic-bps "$NIC_BPS" -out "$OUT/knee-$STAMP-$arm.json" > "$OUT/knee-$STAMP-$arm.log" 2>&1 &
+  MYSQL_DSN="${!dsnvar}" "$GB" knee -label "$arm" -scenario "$SCEN" -steps "$STEPS" -step-sec "$STEPSEC" -accounts "$ACCOUNTS" -slots "${SLOTS:-16}" -nic-bps "$NIC_BPS" -out "$OUT/knee-$STAMP-$arm.json" > "$OUT/knee-$STAMP-$arm.log" 2>&1 &
 done
 wait
 for arm in v1 v2; do

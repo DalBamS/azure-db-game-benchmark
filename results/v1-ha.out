@@ -1,2 +1,92 @@
 WARNING: Enabling High-availability may result in a short downtime for the server based on your server configuration.
 WARNING: IOPS is 5000 which is either your input or free(maximum) IOPS supported for your storage size and SKU.
+{
+  "administratorLogin": "mysqladmin",
+  "administratorLoginPassword": null,
+  "availabilityZone": "1",
+  "backup": {
+    "backupIntervalHours": 24,
+    "backupRetentionDays": 7,
+    "earliestRestoreDate": "2026-08-15T03:47:39.372459+00:00",
+    "geoRedundantBackup": "Disabled"
+  },
+  "createMode": null,
+  "dataEncryption": null,
+  "databasePort": 3306,
+  "fullVersion": "8.4.9",
+  "fullyQualifiedDomainName": "mysqlbm-euson-v1.mysql.database.azure.com",
+  "highAvailability": {
+    "mode": "SameZone",
+    "replicationMode": "BinaryLog",
+    "standbyAvailabilityZone": "1",
+    "state": "Healthy"
+  },
+  "id": "/subscriptions/7784c8b4-64ba-4b09-bee8-ee6f8f9a7309/resourceGroups/mysql-storage-benchmark/providers/Microsoft.DBforMySQL/flexibleServers/mysqlbm-euson-v1",
+  "identity": {
+    "principalId": "00000000-0000-0000-0000-000000000000",
+    "tenantId": "00000000-0000-0000-0000-000000000000",
+    "type": "UserAssigned",
+    "userAssignedIdentities": {
+      "/subscriptions/7784c8b4-64ba-4b09-bee8-ee6f8f9a7309/resourcegroups/mysql-storage-benchmark/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mysqlbm-euson-identity": {
+        "clientId": null,
+        "principalId": "4b78461d-38f1-4273-bbb1-90912bddfc43",
+        "tenantId": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+      }
+    }
+  },
+  "importSourceProperties": null,
+  "location": "Korea Central",
+  "lowerCaseTableNames": null,
+  "maintenancePolicy": {
+    "patchStrategy": "Regular"
+  },
+  "maintenanceWindow": {
+    "batchOfMaintenance": "Default",
+    "customWindow": "Disabled",
+    "dayOfWeek": 0,
+    "startHour": 0,
+    "startMinute": 0
+  },
+  "name": "mysqlbm-euson-v1",
+  "network": {
+    "delegatedSubnetResourceId": null,
+    "privateDnsZoneResourceId": null,
+    "publicNetworkAccess": "Enabled"
+  },
+  "privateEndpointConnections": [],
+  "replicaCapacity": 10,
+  "replicationRole": "None",
+  "resourceGroup": "mysql-storage-benchmark",
+  "restorePointInTime": null,
+  "sku": {
+    "name": "Standard_E8ds_v5",
+    "tier": "MemoryOptimized"
+  },
+  "sourceServerResourceId": null,
+  "state": "Ready",
+  "storage": {
+    "autoGrow": "Enabled",
+    "autoIoScaling": "Disabled",
+    "iops": 5000,
+    "logOnDisk": "Disabled",
+    "storageRedundancy": "LocalRedundancy",
+    "storageSizeGb": 128,
+    "storageSku": "Premium_LRS"
+  },
+  "systemData": {
+    "createdAt": "2026-08-15T03:37:39.372459+00:00",
+    "createdBy": null,
+    "createdByType": null,
+    "lastModifiedAt": null,
+    "lastModifiedBy": null,
+    "lastModifiedByType": null
+  },
+  "tags": {
+    "capabilityPair": "E8",
+    "project": "azure-mysql-ssd-benchmark",
+    "storageSku": "Premium_LRS",
+    "topology": "no-ha-zone1"
+  },
+  "type": "Microsoft.DBforMySQL/flexibleServers",
+  "version": "8.4"
+}

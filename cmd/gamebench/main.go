@@ -24,21 +24,27 @@ import (
 
 	"github.com/euson/azure-db-benchmark/internal/bench"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 func logf(format string, a ...any) {
 	fmt.Fprintf(os.Stderr, time.Now().UTC().Format("2006-01-02T15:04:05Z")+" "+format+"\n", a...)
 }
 
+var driver = "mysql"
+
 func mustDB(dsn string, maxOpen int) *sql.DB {
 	if dsn == "" {
 		dsn = os.Getenv("MYSQL_DSN")
+		if driver == "pgx" {
+			dsn = os.Getenv("PG_DSN")
+		}
 	}
 	if dsn == "" {
-		logf("missing -dsn / MYSQL_DSN (format: user:pass@tcp(host:3306)/db?tls=true&interpolateParams=true&parseTime=true)")
+		logf("missing -dsn / MYSQL_DSN|PG_DSN")
 		os.Exit(2)
 	}
-	db, err := sql.Open("mysql", dsn)
+	db, err := sql.Open(driver, dsn)
 	if err != nil {
 		logf("open: %v", err)
 		os.Exit(2)
@@ -84,7 +90,8 @@ func main() {
 	defer stop()
 	sub := os.Args[1]
 	fs := flag.NewFlagSet(sub, flag.ExitOnError)
-	dsn := fs.String("dsn", "", "MySQL DSN (or MYSQL_DSN)")
+	dsn := fs.String("dsn", "", "MySQL DSN (or MYSQL_DSN) / PG URL (or PG_DSN)")
+	drv := fs.String("driver", "mysql", "mysql|pgx")
 	schema := fs.String("schema", "benchmark", "database name (for size queries)")
 	out := fs.String("out", "-", "output JSON path")
 	// load flags
@@ -118,18 +125,25 @@ func main() {
 	steps := fs.String("steps", "16,32,64,128,256,512", "closed-loop concurrency steps")
 	stepSec := fs.Int("step-sec", 120, "seconds per step (after 30s warmup)")
 	fs.Parse(os.Args[2:])
+	driver = *drv
+	isPG := driver == "pgx"
+	createSchema, reset, load, captureEnv, check, scenarioMix := bench.CreateSchema, bench.Reset, bench.Load, bench.CaptureEnv, bench.CheckInvariants, bench.ScenarioMix
+	var fetch bench.StatusFetch
+	if isPG {
+		createSchema, reset, load, captureEnv, check, scenarioMix, fetch = bench.PGCreateSchema, bench.PGReset, bench.PGLoad, bench.PGCaptureEnv, bench.PGCheckInvariants, bench.PGScenarioMix, bench.PGFetchStatus
+	}
 
 	switch sub {
 	case "schema":
 		db := mustDB(*dsn, 4)
-		if err := bench.CreateSchema(ctx, db); err != nil {
+		if err := createSchema(ctx, db); err != nil {
 			logf("schema: %v", err)
 			os.Exit(1)
 		}
 		logf("schema ok")
 	case "reset":
 		db := mustDB(*dsn, 4)
-		if err := bench.Reset(ctx, db); err != nil {
+		if err := reset(ctx, db); err != nil {
 			logf("reset: %v", err)
 			os.Exit(1)
 		}
@@ -137,22 +151,22 @@ func main() {
 	case "load":
 		db := mustDB(*dsn, *loadWorkers)
 		cfg := bench.LoadConfig{Accounts: *accounts, Slots: *slots, ProfileBytes: *profileBytes, AttrsBytes: *attrsBytes, Guilds: *guilds, Workers: *loadWorkers, Batch: *batch, Seed: *seed, InitialBalance: 1_000_000}
-		if err := bench.Load(ctx, db, cfg, logf); err != nil {
+		if err := load(ctx, db, cfg, logf); err != nil {
 			logf("load: %v", err)
 			os.Exit(1)
 		}
-		env, _ := bench.CaptureEnv(ctx, db, *schema)
+		env, _ := captureEnv(ctx, db, *schema)
 		writeJSON(*out, env)
 	case "env":
 		db := mustDB(*dsn, 4)
-		env, err := bench.CaptureEnv(ctx, db, *schema)
+		env, err := captureEnv(ctx, db, *schema)
 		if err != nil {
 			logf("env: %v", err)
 		}
 		writeJSON(*out, env)
 	case "check":
 		db := mustDB(*dsn, 4)
-		rep, err := bench.CheckInvariants(ctx, db)
+		rep, err := check(ctx, db)
 		if err != nil {
 			logf("check: %v", err)
 			os.Exit(1)
@@ -160,12 +174,12 @@ func main() {
 		writeJSON(*out, rep)
 	case "knee":
 		db := mustDB(*dsn, 1024)
-		mix, err := bench.ScenarioMix(*scenario)
+		mix, err := scenarioMix(*scenario)
 		if err != nil {
 			logf("%v", err)
 			os.Exit(2)
 		}
-		env, _ := bench.CaptureEnv(ctx, db, *schema)
+		env, _ := captureEnv(ctx, db, *schema)
 		var ns []int
 		for _, s := range splitInts(*steps) {
 			ns = append(ns, s)
@@ -185,7 +199,7 @@ func main() {
 		for i, n := range ns {
 			cfg := bench.RunConfig{Mode: "closed", Scenario: *scenario, Workers: n, WarmupSec: 30, WarmupMaxSec: 30, SteadyCVPct: 100, MeasureSec: *stepSec,
 				StmtTimeoutMs: *stmtTimeout, Accounts: *accounts, Slots: *slots, HotKeys: *hotKeys, HotProb: *hotProb, Seed: *seed + uint64(i), NICLimitBps: *nic, Label: fmt.Sprintf("%s-knee-%d", *label, n)}
-			r := &bench.Runner{DB: db, Cfg: cfg, Mix: mix, Log: logf, Env: env}
+			r := &bench.Runner{DB: db, Cfg: cfg, Mix: mix, Log: logf, Env: env, Fetch: fetch}
 			res, err := r.Run(ctx)
 			if err != nil {
 				logf("knee step %d: %v", n, err)
@@ -224,12 +238,12 @@ func main() {
 			"recommended_rate_65pct": bestTPS * 0.65, "env": env, "captured_at": time.Now().UTC()})
 	case "run":
 		db := mustDB(*dsn, *workers)
-		mix, err := bench.ScenarioMix(*scenario)
+		mix, err := scenarioMix(*scenario)
 		if err != nil {
 			logf("%v", err)
 			os.Exit(2)
 		}
-		env, err := bench.CaptureEnv(ctx, db, *schema)
+		env, err := captureEnv(ctx, db, *schema)
 		if err != nil {
 			logf("env warning: %v", err)
 		}
@@ -240,7 +254,7 @@ func main() {
 		cfg := bench.RunConfig{Mode: *mode, Scenario: *scenario, TargetRate: *rate, Workers: *workers, WarmupSec: *warmup, WarmupMaxSec: *warmupMax, SteadyCVPct: *steadyCV,
 			MeasureSec: *measure, QueueSec: *queueSec, StmtTimeoutMs: *stmtTimeout, Accounts: *accounts, Slots: *slots, HotKeys: hk, HotProb: hp, Seed: *seed,
 			NICLimitBps: *nic, Label: *label, BurstAtSec: *burstAt, BurstSec: *burstSec, BurstFactor: *burstFactor}
-		r := &bench.Runner{DB: db, Cfg: cfg, Mix: mix, Log: logf, Env: env}
+		r := &bench.Runner{DB: db, Cfg: cfg, Mix: mix, Log: logf, Env: env, Fetch: fetch}
 		res, err := r.Run(ctx)
 		if err != nil {
 			logf("run: %v", err)
