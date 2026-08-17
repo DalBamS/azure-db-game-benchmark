@@ -8,10 +8,22 @@ import json, subprocess, sys, glob, os, datetime as dt
 
 SUB = "7784c8b4-64ba-4b09-bee8-ee6f8f9a7309"
 RG = "mysql-storage-benchmark"
-SERVERS = {"v1": "mysqlbm-euson-v1", "v2": "mysqlbm-euson-v2"}
-METRICS = ["cpu_percent", "memory_percent", "io_consumption_percent", "storage_io_count", "active_connections",
-           "Queries", "Innodb_buffer_pool_reads", "Innodb_buffer_pool_read_requests", "Innodb_data_writes",
-           "network_bytes_ingress", "network_bytes_egress", "aborted_connections", "total_connections", "storage_percent"]
+SERVERS = {
+    "v1": (RG, "Microsoft.DBforMySQL/flexibleServers", "mysqlbm-euson-v1"),
+    "v2": (RG, "Microsoft.DBforMySQL/flexibleServers", "mysqlbm-euson-v2"),
+    "postgres": ("rg-expa-pg-hz", "Microsoft.DBforPostgreSQL/flexibleServers", "expa-pg"),
+    "horizon": ("rg-expa-pg-hz", "Microsoft.HorizonDB/clusters", "expa-hz"),
+}
+METRICS_BY_TYPE = {
+    "Microsoft.DBforMySQL/flexibleServers": ["cpu_percent", "memory_percent", "io_consumption_percent", "storage_io_count", "active_connections",
+        "Queries", "Innodb_buffer_pool_reads", "Innodb_buffer_pool_read_requests", "Innodb_data_writes", "network_bytes_ingress", "network_bytes_egress", "aborted_connections", "total_connections", "storage_percent"],
+    "Microsoft.DBforPostgreSQL/flexibleServers": ["cpu_percent", "memory_percent", "iops", "read_iops", "write_iops", "disk_iops_consumed_percentage", "disk_bandwidth_consumed_percentage", "disk_queue_depth", "active_connections",
+        "network_bytes_ingress", "network_bytes_egress", "storage_percent", "read_throughput", "write_throughput", "blks_read", "blks_hit", "tps", "physical_replication_delay_in_seconds"],
+    "Microsoft.HorizonDB/clusters": ["CpuPercent", "MemoryPercent", "ActiveConnections", "NetworkBytesIngress", "NetworkBytesEgress", "TransactionsPerSecond", "CommitLatency", "WriteLatency", "WALBytesWritten", "WALWritesPerSecond", "BufferPoolCacheHitRatio", "StorageUsed", "Deadlocks", "TuplesFetched", "TuplesUpdated"],
+}
+CORE_BY_TYPE = {"Microsoft.DBforMySQL/flexibleServers": ["cpu_percent", "io_consumption_percent", "active_connections"],
+                "Microsoft.DBforPostgreSQL/flexibleServers": ["cpu_percent", "iops", "active_connections"],
+                "Microsoft.HorizonDB/clusters": ["CpuPercent", "ActiveConnections"]}
 
 
 def az(args):
@@ -24,12 +36,13 @@ def az(args):
 def slice_run(path):
     run = json.load(open(path, encoding="utf-8"))
     arm = run["config"]["label"]
-    server = SERVERS.get(arm)
-    if not server:
+    if arm not in SERVERS:
         print("skip (unknown arm)", path); return
+    rg, rtype, server = SERVERS[arm]
+    METRICS = METRICS_BY_TYPE[rtype]
     t0 = dt.datetime.fromisoformat(run["measure_from"].replace("Z", "+00:00")) - dt.timedelta(minutes=1)
     t1 = dt.datetime.fromisoformat(run["measure_to"].replace("Z", "+00:00")) + dt.timedelta(minutes=1)
-    rid = f"/subscriptions/{SUB}/resourceGroups/{RG}/providers/Microsoft.DBforMySQL/flexibleServers/{server}"
+    rid = f"/subscriptions/{SUB}/resourceGroups/{rg}/providers/{rtype}/{server}"
     fmt = "%Y-%m-%dT%H:%M:%SZ"
     out = {"server": server, "window_utc": [t0.strftime(fmt), t1.strftime(fmt)], "metrics": {}, "nonempty": {}, "captured_at": dt.datetime.now(dt.timezone.utc).isoformat()}
     for m in METRICS:
@@ -45,7 +58,7 @@ def slice_run(path):
                     series.append({"t": d.get("timeStamp"), "avg": d.get("average"), "max": d.get("maximum"), "total": d.get("total")})
         out["metrics"][m] = series
         out["nonempty"][m] = any(x["avg"] is not None or x["total"] is not None for x in series)
-    core = ["cpu_percent", "io_consumption_percent", "active_connections"]
+    core = CORE_BY_TYPE[rtype]
     out["gate_G6_platform"] = {"pass": all(out["nonempty"].get(m) for m in core), "core_metrics": {m: out["nonempty"].get(m) for m in core}}
     dst = path[:-5] + ".azmon.json"
     json.dump(out, open(dst, "w", encoding="utf-8"), indent=1)

@@ -1,0 +1,123 @@
+{
+ "captured_at": "2026-08-17T17:03:20.528647327Z",
+ "env": {
+  "variables": {
+   "binlog_format": "ROW",
+   "hostname": "bf0a76f5851a",
+   "innodb_adaptive_hash_index": "OFF",
+   "innodb_buffer_pool_size": "8589934592",
+   "innodb_doublewrite": "ON",
+   "innodb_flush_log_at_trx_commit": "1",
+   "innodb_flush_method": "O_DIRECT",
+   "innodb_flush_neighbors": "0",
+   "innodb_io_capacity": "10000",
+   "innodb_io_capacity_max": "20000",
+   "innodb_lru_scan_depth": "1024",
+   "innodb_page_size": "16384",
+   "innodb_read_io_threads": "4",
+   "innodb_redo_log_capacity": "536870912",
+   "innodb_write_io_threads": "4",
+   "log_bin": "ON",
+   "max_connections": "5461",
+   "require_secure_transport": "ON",
+   "sync_binlog": "1",
+   "version": "8.4.9-azure"
+  },
+  "table_gib": {
+   "accounts": 3.5797,
+   "bench_meta": 0,
+   "game_sessions": 0,
+   "guild_members": 0.1277,
+   "guilds": 0.11,
+   "inventory": 19.5537,
+   "inventory_items": 0.0001,
+   "leaderboard": 0.2876,
+   "leaderboard_scores": 0,
+   "ledger_entries": 0,
+   "login_sessions": 0,
+   "match_results": 0,
+   "players": 0,
+   "purchase_ledger": 0,
+   "state_saves": 0,
+   "wallets": 0
+  },
+  "total_gib": 23.6588,
+  "approx_rows": {
+   "accounts": 2173544,
+   "bench_meta": 5,
+   "game_sessions": 0,
+   "guild_members": 2469890,
+   "guilds": 92872,
+   "inventory": 49193470,
+   "inventory_items": 704,
+   "leaderboard": 2545786,
+   "leaderboard_scores": 200,
+   "ledger_entries": 86,
+   "login_sessions": 200,
+   "match_results": 0,
+   "players": 200,
+   "purchase_ledger": 0,
+   "state_saves": 73,
+   "wallets": 200
+  },
+  "hostname": "bf0a76f5851a",
+  "captured_at": "2026-08-17T16:53:05.616864002Z"
+ },
+ "knee_tps": 9648.741681152036,
+ "knee_workers": 256,
+ "label": "v2",
+ "recommended_rate_65pct": 6271.682092748823,
+ "scenario": "S1",
+ "steps": [
+  {
+   "workers": 32,
+   "success_tps": 4594.353580953434,
+   "p50_us": 2873,
+   "p99_us": 29791,
+   "error_rate": 0,
+   "read_iops": 2343.769306631756,
+   "write_iops": 2495.505289967554,
+   "host_cpu_max": 5.81008446378295
+  },
+  {
+   "workers": 64,
+   "success_tps": 6122.108287623525,
+   "p50_us": 3511,
+   "p99_us": 56895,
+   "error_rate": 0,
+   "read_iops": 2595.6000860586796,
+   "write_iops": 2372.353111955039,
+   "host_cpu_max": 8.322580645161292
+  },
+  {
+   "workers": 128,
+   "success_tps": 7604.750251897745,
+   "p50_us": 4073,
+   "p99_us": 88191,
+   "error_rate": 0,
+   "read_iops": 2663.512857443394,
+   "write_iops": 2364.911615408928,
+   "host_cpu_max": 10.336351875808536
+  },
+  {
+   "workers": 256,
+   "success_tps": 9052.516416340528,
+   "p50_us": 4583,
+   "p99_us": 132863,
+   "error_rate": 0,
+   "read_iops": 2740.6832138424325,
+   "write_iops": 2357.461025907029,
+   "host_cpu_max": 5.7991333163395336
+  },
+  {
+   "workers": 384,
+   "success_tps": 9648.741681152036,
+   "p50_us": 6395,
+   "p99_us": 175871,
+   "error_rate": 0,
+   "read_iops": 2872.436076209899,
+   "write_iops": 2262.0309153681715,
+   "host_cpu_max": 6.134185303514372
+  }
+ ]
+}

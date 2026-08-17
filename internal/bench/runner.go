@@ -257,7 +257,7 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 		go func(id int) {
 			defer wg.Done()
 			// per-run entropy: request ids (uuids) must not repeat across runs, so mix wall-clock nanos into the seed
-			w := &Worker{ID: id, Rng: rand.New(rand.NewPCG(cfg.Seed+uint64(id)*7919+runNonce, cfg.Seed^uint64(id)^runNonce)), Keys: NewKeyPicker(cfg.Accounts, cfg.HotKeys, cfg.HotProb, cfg.Seed+uint64(id)*104729), Slots: cfg.Slots}
+			w := &Worker{ID: id, Rng: rand.New(rand.NewPCG(cfg.Seed+uint64(id)*7919+runNonce, cfg.Seed^uint64(id)^runNonce)), Keys: NewKeyPicker(cfg.Accounts, cfg.HotKeys, cfg.HotProb, cfg.Seed+uint64(id)*104729+runNonce), Slots: cfg.Slots}
 			if cfg.Mode == "closed" {
 				for runCtx.Err() == nil {
 					execOne(w, conns[w.ID], time.Now())

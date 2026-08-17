@@ -294,11 +294,15 @@ func PGCaptureEnv(ctx context.Context, db *sql.DB, schema string) (*EnvSnapshot,
 
 func pgSizeToBytes(s, blockSize string) (int64, error) {
 	s = strings.TrimSpace(s)
-	units := map[string]int64{"kB": 1024, "MB": 1 << 20, "GB": 1 << 30, "TB": 1 << 40, "B": 1}
-	for u, m := range units {
-		if strings.HasSuffix(s, u) {
-			n, err := strconv.ParseInt(strings.TrimSpace(strings.TrimSuffix(s, u)), 10, 64)
-			return n * m, err
+	// longest suffix first (map iteration order is random and "8GB" also ends with "B")
+	units := []struct {
+		u string
+		m int64
+	}{{"kB", 1024}, {"MB", 1 << 20}, {"GB", 1 << 30}, {"TB", 1 << 40}, {"B", 1}}
+	for _, x := range units {
+		if strings.HasSuffix(s, x.u) {
+			n, err := strconv.ParseInt(strings.TrimSpace(strings.TrimSuffix(s, x.u)), 10, 64)
+			return n * x.m, err
 		}
 	}
 	// plain number = blocks

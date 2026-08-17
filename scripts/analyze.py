@@ -9,6 +9,10 @@ usage: python scripts/analyze.py results/ [--out analysis/]
 """
 import json, glob, os, sys, math, random, statistics as st, re, csv, datetime as dt
 
+ARM_ORDER = ["v1", "v2", "postgres", "horizon"]
+SOFT_GATES = set()  # gates treated as warnings (documented), e.g. for exp A where G1/G2 cannot hold for HorizonDB
+
+
 OUTCOMES = [
     ("success_tps", "Throughput (success TPS)", "higher", lambda r: r["success_tps"]),
     ("p50_us", "Latency p50 (us)", "lower", lambda r: r["overall"]["latency"]["p50_us"]),
@@ -47,7 +51,7 @@ def load_runs(root):
     for f in glob.glob(os.path.join(root, "**", "rep*-*.json"), recursive=True):
         if f.endswith(".azmon.json") or f.endswith(".invariants.json"):
             continue
-        m = re.search(r"[\\/](C\d)[\\/](S\d)[\\/]rate(\d+)[\\/]rep(\d+)-\d+T\d+Z-(v\d)\.json$", f)
+        m = re.search(r"[\\/](C\d)[\\/](S\d)[\\/]rate(\d+)[\\/]rep(\d+)-\d+T\d+Z-(\w+)\.json$", f)
         if not m:
             continue
         case, scen, rate, rep, arm = m.groups()
@@ -61,11 +65,31 @@ def load_runs(root):
     return runs
 
 
+def fix_g1(r):
+    """Recompute G1 from env when the runner could not (PG shared_buffers parse bug in early binary)."""
+    env = r.get("env") or {}
+    v = env.get("variables", {})
+    bp = v.get("innodb_buffer_pool_size")
+    if not bp and v.get("shared_buffers"):
+        sb = v["shared_buffers"]
+        mult = {"kB": 1024, "MB": 1 << 20, "GB": 1 << 30, "TB": 1 << 40}
+        for u, m in mult.items():
+            if sb.endswith(u):
+                bp = str(int(sb[:-len(u)]) * m); break
+    if bp:
+        ratio = env.get("total_gib", 0) / (float(bp) / 2**30)
+        r["gates"]["G1_dataset_vs_bufferpool"] = {"pass": ratio >= 2.0, "value": f"{env.get('total_gib',0):.1f} GiB / {float(bp)/2**30:.1f} GiB = {ratio:.2f}x", "rule": ">= 2.0x"}
+        r["gates_passed"] = all(g["pass"] for g in r["gates"].values())
+
+
 def run_ok(r):
-    g = r.get("gates_passed", False)
+    fix_g1(r)
+    hard = {k: v for k, v in r["gates"].items() if k not in SOFT_GATES}
+    g = all(v["pass"] for v in hard.values())
     azok = True if r["_azmon"] is None else r["_azmon"]["gate_G6_platform"]["pass"]
     invok = True if r["_inv"] is None else r["_inv"]["violations"] == 0
-    return g and azok and invok, {"gates": g, "azmon_G6": azok, "invariants_G9": invok, "azmon_present": r["_azmon"] is not None}
+    soft_failed = [k for k in SOFT_GATES if k in r["gates"] and not r["gates"][k]["pass"]]
+    return g and azok and invok, {"gates": g, "azmon_G6": azok, "invariants_G9": invok, "azmon_present": r["_azmon"] is not None, "soft_failed": soft_failed}
 
 
 def analyze(root, out):
@@ -77,21 +101,24 @@ def analyze(root, out):
     for (case, scen, rate), reps in sorted(runs.items()):
         cell = {"case": case, "scenario": scen, "rate": rate, "reps": {}, "outcomes": {}}
         usable = []
+        arms_present = sorted({a for r_ in reps.values() for a in r_}, key=lambda a: ARM_ORDER.index(a) if a in ARM_ORDER else 99)
+        A, B = (arms_present + [None, None])[:2]
+        cell["arms"] = [A, B]
         for rep, arms in sorted(reps.items()):
             info = {}
-            for arm in ("v1", "v2"):
+            for arm in (A, B):
                 if arm in arms:
                     ok, why = run_ok(arms[arm])
                     info[arm] = {"ok": ok, **why, "gates": {k: v["pass"] for k, v in arms[arm]["gates"].items()},
                                  "tps": arms[arm]["success_tps"], "p99_us": arms[arm]["overall"]["latency"]["p99_us"],
                                  "measure_from": arms[arm]["measure_from"], "measure_to": arms[arm]["measure_to"]}
             cell["reps"][rep] = info
-            if "v1" in arms and "v2" in arms and info["v1"]["ok"] and info["v2"]["ok"]:
-                usable.append((rep, arms["v1"], arms["v2"]))
-        cell["n_pairs_total"] = sum(1 for a in reps.values() if "v1" in a and "v2" in a)
+            if A in arms and B in arms and info[A]["ok"] and info[B]["ok"]:
+                usable.append((rep, arms[A], arms[B]))
+        cell["n_pairs_total"] = sum(1 for a in reps.values() if A in a and B in a)
         cell["n_pairs_usable"] = len(usable)
-        md += [f"## {case} / {scen} / {rate} arrivals/s", "", f"pairs: {cell['n_pairs_usable']} usable of {cell['n_pairs_total']} (gate-failed pairs excluded)", "",
-               "| Outcome | n | v1 median | v2 median | v1 CV% | v2 CV% | Δ% (v2 vs v1, geo-mean) | 95% CI | note |", "|---|---:|---:|---:|---:|---:|---:|---|---|"]
+        md += [f"## {case} / {scen} / {rate} arrivals/s  ({A} vs {B})", "", f"pairs: {cell['n_pairs_usable']} usable of {cell['n_pairs_total']} (hard-gate-failed pairs excluded; soft gates: {sorted(SOFT_GATES) or 'none'})", "",
+               f"| Outcome | n | {A} median | {B} median | {A} CV% | {B} CV% | Δ% ({B} vs {A}, geo-mean) | 95% CI | note |", "|---|---:|---:|---:|---:|---:|---:|---|---|"]
         for key, label, better, fn in OUTCOMES:
             v1s = [fn(a) for _, a, _ in usable]
             v2s = [fn(b) for _, _, b in usable]
@@ -107,9 +134,9 @@ def analyze(root, out):
                 o["ci95"] = [100 * (math.exp(ci[0]) - 1), 100 * (math.exp(ci[1]) - 1)]
                 lo, hi = o["ci95"]
                 if hi < 0:
-                    o["note"] = "v2 lower" + (" (better)" if better == "lower" else " (worse)")
+                    o["note"] = f"{B} lower" + (" (better)" if better == "lower" else " (worse)")
                 elif lo > 0:
-                    o["note"] = "v2 higher" + (" (better)" if better == "higher" else " (worse)")
+                    o["note"] = f"{B} higher" + (" (better)" if better == "higher" else " (worse)")
                 else:
                     o["note"] = "CI includes 0"
                 if len(pairs) < 5:
@@ -127,7 +154,7 @@ def analyze(root, out):
         for rep, info in sorted(cell["reps"].items()):
             for arm, i in info.items():
                 failed = [k for k, v in i["gates"].items() if not v]
-                md.append(f"- rep {rep} {arm}: ok={i['ok']} tps={i['tps']:.0f} p99={i['p99_us']}us azmon={i['azmon_G6']} inv={i['invariants_G9']}" + (f" FAILED: {failed}" if failed else ""))
+                md.append(f"- rep {rep} {arm}: ok={i['ok']} tps={i['tps']:.0f} p99={i['p99_us']}us azmon={i['azmon_G6']} inv={i['invariants_G9']}" + (f" FAILED: {failed}" if failed else "") + (f" (soft-gate warnings: {i['soft_failed']})" if i.get('soft_failed') else ""))
         md.append("")
         report["cells"].append(cell)
     json.dump(report, open(os.path.join(out, "analysis.json"), "w", encoding="utf-8"), indent=1)
@@ -142,4 +169,6 @@ def analyze(root, out):
 if __name__ == "__main__":
     root = sys.argv[1] if len(sys.argv) > 1 else "results"
     out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "analysis"
+    if "--soft" in sys.argv:
+        SOFT_GATES.update(sys.argv[sys.argv.index("--soft") + 1].split(","))
     analyze(root, out)

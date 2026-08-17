@@ -1,0 +1,79 @@
+{
+ "captured_at": "2026-08-17T17:24:16.748209704Z",
+ "env": {
+  "variables": {
+   "azure.extensions": "",
+   "block_size": "8192",
+   "checkpoint_timeout": "10min",
+   "effective_cache_size": "24GB",
+   "effective_io_concurrency": "1",
+   "fsync": "on",
+   "full_page_writes": "on",
+   "huge_pages": "try",
+   "innodb_buffer_pool_size": "8589934592",
+   "max_connections": "3437",
+   "max_wal_size": "20GB",
+   "max_worker_processes": "8",
+   "random_page_cost": "2",
+   "server_version": "17.10",
+   "shared_buffers": "8GB",
+   "ssl": "on",
+   "synchronous_commit": "on",
+   "wal_compression": "pglz",
+   "wal_level": "replica",
+   "work_mem": "4MB"
+  },
+  "table_gib": {
+   "accounts": 2.8225784301757812,
+   "bench_meta": 0.00002288818359375,
+   "game_sessions": 0.0000152587890625,
+   "guild_members": 0.21112823486328125,
+   "guilds": 0.1111602783203125,
+   "inventory": 19.675453186035156,
+   "leaderboard": 0.236480712890625,
+   "match_results": 0.00002288818359375,
+   "purchase_ledger": 0.00002288818359375
+  },
+  "total_gib": 23.056884765625,
+  "approx_rows": {
+   "accounts": 2499905,
+   "bench_meta": 5,
+   "game_sessions": 0,
+   "guild_members": 2500000,
+   "guilds": 100000,
+   "inventory": 49999924,
+   "leaderboard": 2500000,
+   "match_results": 0,
+   "purchase_ledger": 0
+  },
+  "hostname": "",
+  "captured_at": "2026-08-17T17:20:13.863904952Z"
+ },
+ "knee_tps": 8908.679103991703,
+ "knee_workers": 32,
+ "label": "postgres",
+ "recommended_rate_65pct": 5790.6414175946065,
+ "scenario": "S1",
+ "steps": [
+  {
+   "workers": 32,
+   "success_tps": 8063.070825260575,
+   "p50_us": 612,
+   "p99_us": 20671,
+   "error_rate": 0,
+   "read_iops": 5521.926628065716,
+   "write_iops": 4181.499671993737,
+   "host_cpu_max": 21.221908222311935
+  },
+  {
+   "workers": 64,
+   "success_tps": 8908.679103991703,
+   "p50_us": 729,
+   "p99_us": 59903,
+   "error_rate": 0,
+   "read_iops": 4648.482360340408,
+   "write_iops": 2738.675136488468,
+   "host_cpu_max": 31.23098201936376
+  }
+ ]
+}

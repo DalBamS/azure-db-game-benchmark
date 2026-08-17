@@ -1,0 +1,103 @@
+{
+ "captured_at": "2026-08-17T16:59:09.136351264Z",
+ "env": {
+  "variables": {
+   "binlog_format": "ROW",
+   "hostname": "f0e793053ebf",
+   "innodb_adaptive_hash_index": "OFF",
+   "innodb_buffer_pool_size": "8589934592",
+   "innodb_doublewrite": "OFF",
+   "innodb_flush_log_at_trx_commit": "1",
+   "innodb_flush_method": "O_DIRECT",
+   "innodb_flush_neighbors": "0",
+   "innodb_io_capacity": "10000",
+   "innodb_io_capacity_max": "20000",
+   "innodb_lru_scan_depth": "1024",
+   "innodb_page_size": "16384",
+   "innodb_read_io_threads": "4",
+   "innodb_redo_log_capacity": "536870912",
+   "innodb_write_io_threads": "4",
+   "log_bin": "ON",
+   "max_connections": "5461",
+   "require_secure_transport": "ON",
+   "sync_binlog": "1",
+   "version": "8.4.9-azure"
+  },
+  "table_gib": {
+   "accounts": 3.2702,
+   "bench_meta": 0,
+   "game_sessions": 0,
+   "guild_members": 0.1326,
+   "guilds": 0.11,
+   "inventory": 20.6865,
+   "inventory_items": 0.0001,
+   "leaderboard": 0.2396,
+   "leaderboard_scores": 0,
+   "ledger_entries": 0,
+   "login_sessions": 0,
+   "match_results": 0,
+   "players": 0,
+   "purchase_ledger": 0,
+   "state_saves": 0,
+   "wallets": 0
+  },
+  "total_gib": 24.438999999999997,
+  "approx_rows": {
+   "accounts": 2294672,
+   "bench_meta": 5,
+   "game_sessions": 0,
+   "guild_members": 2515190,
+   "guilds": 92872,
+   "inventory": 49093962,
+   "inventory_items": 712,
+   "leaderboard": 2047589,
+   "leaderboard_scores": 200,
+   "ledger_entries": 94,
+   "login_sessions": 200,
+   "match_results": 0,
+   "players": 200,
+   "purchase_ledger": 0,
+   "state_saves": 73,
+   "wallets": 200
+  },
+  "hostname": "f0e793053ebf",
+  "captured_at": "2026-08-17T16:53:05.612444857Z"
+ },
+ "knee_tps": 7908.441518276389,
+ "knee_workers": 64,
+ "label": "v1",
+ "recommended_rate_65pct": 5140.486986879653,
+ "scenario": "S1",
+ "steps": [
+  {
+   "workers": 32,
+   "success_tps": 4436.196826193754,
+   "p50_us": 4203,
+   "p99_us": 23343,
+   "error_rate": 0,
+   "read_iops": 2202.696296265537,
+   "write_iops": 1752.4447488401174,
+   "host_cpu_max": 5.7721908671113376
+  },
+  {
+   "workers": 64,
+   "success_tps": 6701.670287171972,
+   "p50_us": 4803,
+   "p99_us": 36703,
+   "error_rate": 0,
+   "read_iops": 2735.8974704061775,
+   "write_iops": 2192.5953725896748,
+   "host_cpu_max": 8.278529980657645
+  },
+  {
+   "workers": 128,
+   "success_tps": 7908.441518276389,
+   "p50_us": 9319,
+   "p99_us": 86975,
+   "error_rate": 0,
+   "read_iops": 2661.945702027526,
+   "write_iops": 2440.470557538253,
+   "host_cpu_max": 10.437144335230208
+  }
+ ]
+}

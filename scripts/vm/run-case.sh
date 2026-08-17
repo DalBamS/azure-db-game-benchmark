@@ -10,7 +10,7 @@ ACCOUNTS=$(python3 -c "import json,glob;f=sorted(glob.glob('$RESULTS/load-*-v1.j
 ACCOUNTS=${ACCOUNTS_OVERRIDE:-$ACCOUNTS}
 OUT="$RESULTS/$CASE/$SCEN/rate$RATE"; mkdir -p "$OUT"
 echo "$(ts) case=$CASE scen=$SCEN rate=$RATE reps=$REPS measure=$MEASURE workers=$WORKERS warmup=$WARMUP accounts=$ACCOUNTS extra=$EXTRA" | tee -a "$OUT/run-case.log"
-for rep in $(seq 1 "$REPS"); do
+for rep in $(seq "${REP_START:-1}" "$REPS"); do
   STAMP=$(ts)
   echo "$(ts) rep $rep start" | tee -a "$OUT/run-case.log"
   for arm in v1 v2; do
@@ -27,7 +27,7 @@ for rep in $(seq 1 "$REPS"); do
   # invariants after each rep (G9)
   for arm in v1 v2; do
     dsnvar="DSN_$(echo $arm | tr a-z A-Z)"
-    MYSQL_DSN="${!dsnvar}" "$GB" check -out "$OUT/rep$rep-$STAMP-$arm.invariants.json" 2>/dev/null
+    MYSQL_DSN="${!dsnvar/readTimeout=60s/readTimeout=900s}" "$GB" check -out "$OUT/rep$rep-$STAMP-$arm.invariants.json" 2>>"$OUT/check.log" || echo "$(ts) rep $rep $arm invariant check failed" | tee -a "$OUT/run-case.log"
   done
   echo "$(ts) rep $rep done; cooldown 60s" | tee -a "$OUT/run-case.log"
   [ "$rep" -lt "$REPS" ] && sleep 60
