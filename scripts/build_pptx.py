@@ -100,7 +100,7 @@ def load_analysis(d):
 def outcome_rows(cell):
     A, B = cell["arms"]
     keys = [("success_tps", "Throughput (TPS)", "n"), ("p50_us", "p50", "us"), ("p95_us", "p95", "us"), ("p99_us", "p99", "us"), ("p999_us", "p99.9", "us"),
-            ("error_rate", "Error rate", "rate"), ("read_iops", "Server read IOPS", "n"), ("write_iops", "Server write IOPS", "n"), ("bp_hit", "Buffer hit ratio", "ratio")]
+            ("error_rate", "Error rate", "rate"), ("drop_rate", "Dropped arrivals", "rate"), ("burst_recovery_s", "Burst recovery (s)", "n"), ("read_iops", "Server read IOPS", "n"), ("write_iops", "Server write IOPS", "n"), ("bp_hit", "Buffer hit ratio", "ratio")]
     rows = [["Outcome", f"{A} (median)", f"{B} (median)", f"Δ% {B} vs {A}", "95% CI (bootstrap)", "n pairs", "Reading"]]
     for k, label, kind in keys:
         o = cell["outcomes"].get(k)
@@ -133,7 +133,9 @@ def overview_slide(an, exp_title, arm_desc):
 def cell_slides(an, exp_title, chart_dir, arm_desc):
     for ci, cell in enumerate(an["cells"]):
         A, B = cell["arms"]
-        s = section(f"{exp_title} — {cell['case']} / {cell['scenario']} @ {cell['rate']:,}/s", f"{arm_desc}  |  usable pairs {cell['n_pairs_usable']}/{cell['n_pairs_total']} (10-min open-loop measurements, arms run concurrently)")
+        scen_note = {"S1": "S1 normal play (65% read)", "S2": "S2 write-heavy (80% write)", "S3": "S3 login burst: base rate ×3 for 120 s at t+240 s", "S4": "S4 hotspot"}.get(cell["scenario"], cell["scenario"])
+        case_note = {"C1": "8 vCore / Same-zone HA", "C5": "16 vCore / Same-zone HA", "C7": "16 vCore / No-HA (HorizonDB keeps replicaCount 1 — minimum allowed)", "C3": "8 vCore / No-HA"}.get(cell["case"], cell["case"])
+        s = section(f"{exp_title} — {cell['case']} / {cell['scenario']} @ {cell['rate']:,}/s", f"{case_note} · {scen_note}  |  {arm_desc}  |  usable pairs {cell['n_pairs_usable']}/{cell['n_pairs_total']} (10-min open-loop, arms concurrent)")
         table(s, 0.6, 1.5, 12.1, outcome_rows(cell), col_widths=[2.0, 1.6, 1.6, 1.4, 2.2, 0.8, 2.5], size=11)
         # gate summary
         lines = []
@@ -177,6 +179,7 @@ def main(expB_dir, expA_dir, out):
     items += ["All reported numbers come only from runs that passed the hard validity gates (dataset ≥ 2× buffer pool, physical reads > 0, client CPU < 60%, errors < 1%, steady state, server metrics aligned to the UTC window).",
               "3 repetitions per cell (protocol baseline is 5) — CIs are wide; treat effects as directional unless the CI excludes 0.",
               "Exp A: HorizonDB's buffer cache (45 GB at 8 vCore, 90 GB at 16 vCore) exceeds the dataset — G1/G2 are soft-failed for HorizonDB; the comparison is 'storage-bound PG (P15 disk at 100% IOPS) vs cache-resident HorizonDB' at the same offered load. In C5, PG Flexible showed multi-second stalls in 2 of 3 reps (queue/latency gates failed → excluded), HorizonDB none.",
+              "Exp A S2 (write-heavy, 3,300/s): HorizonDB p99 ≈ 4 ms in all 3 reps; PG Flexible (P15 disk, IOPS 100%) stalled for seconds in every rep (p99 0.4–20 s, G4/G5 fail) → no usable pair, but the failure itself is the finding. Exp A C7 (No-HA, warm): PG p99 7–8 ms vs HorizonDB 3.7 ms (−75% [−94%, −46%]).",
               "Exp B: MySQL is storage-bound in both cases (16 vCore did not raise the knee); v2's median latency is consistently lower, but v2 showed a tail-latency degradation episode in the 3rd repetition of both C1 and C5 (dirty pages ↑, threads_running spikes) — root cause not established; needs a longer soak."]
     bullets(s, 0.6, 1.5, 12.1, 5.5, items, 14)
 
@@ -217,7 +220,8 @@ def main(expB_dir, expA_dir, out):
 
     s = section("Limitations & next steps")
     bullets(s, 0.6, 1.4, 12.1, 5.6, [
-        "Only C1 (8 vCore / Same-zone HA / no replica) and C5 (16 vCore) were run, scenario S1, 3 repetitions each (time-boxed to ~7 h). Protocol baseline is 5 reps and 4 scenarios; C2/C3/C4/C6/C7/C8 pending.",
+        "Cases run: C1 (8 vCore/HA), C5 (16 vCore/HA), C7 (16 vCore/No-HA); scenarios S1 (C1: 3 reps, C5: 5 reps, C7: 3 reps), S2 and S3 at C5 (3 reps). Not run: S4, C3, and the read-replica cases C2/C4/C6/C8 (client replica routing not implemented/validated in this time box). HorizonDB cannot be configured with 0 replicas (API minimum 1), so 'No-HA' has no exact HorizonDB counterpart.",
+        "S3 (login burst ×3): MySQL arms could not absorb 6,000/s bursts (queue overflow, 4–7% dropped arrivals → G5 fail on both; reported as burst behaviour, not excluded from the burst slide). PG/HorizonDB absorbed the 6,600/s burst with 0 drops.",
         "Exp B confounds that cannot be removed on the platform: compute generation (v5 vs v6) and innodb_doublewrite (OFF vs ON). Effects should be read as 'SSD v1 product configuration vs SSD v2 product configuration'.",
         "Exp A: HorizonDB exposes far more cache than the Flexible Server SKU with the same vCores; the dataset would need to exceed ~90 GiB to make HorizonDB storage-bound. HorizonDB storage IOPS/memory are not exposed by the preview API.",
         "Buffer pool was pinned to 8 GiB on MySQL to make the storage tier observable within budget; production defaults (48 GiB) would keep more of a 24 GiB dataset in memory.",

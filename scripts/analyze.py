@@ -24,7 +24,32 @@ OUTCOMES = [
     ("write_iops", "Server write IOPS", None, lambda r: (r.get("server_status_delta") or {}).get("write_iops")),
     ("bp_hit", "Buffer pool hit ratio", None, lambda r: (r.get("server_status_delta") or {}).get("buffer_pool_hit_ratio")),
     ("service_p99_us", "Service time p99 (us, excl. queue)", "lower", lambda r: r["service_time"]["p99_us"]),
+    ("burst_recovery_s", "Burst recovery time (s, S3 only)", "lower", lambda r: burst_recovery_sec(r)),
+    ("drop_rate", "Dropped arrivals (queue overflow)", "lower", lambda r: r["drop_rate"]),
 ]
+
+
+def burst_recovery_sec(r):
+    """S3: seconds after the burst window ends until per-second success is back within 5% of the base rate
+    for 10 consecutive seconds. None if not a burst run."""
+    cfg = r["config"]
+    if not cfg.get("burst_factor") or cfg["burst_factor"] <= 1:
+        return None
+    import datetime as _dt
+    t0 = _dt.datetime.fromisoformat(r["measure_from"].replace("Z", "+00:00"))
+    end_burst = t0 + _dt.timedelta(seconds=cfg["burst_at_sec"] + cfg["burst_sec"])
+    base = cfg["target_rate"]
+    secs = [x for x in r["per_second"] if _dt.datetime.fromisoformat(x["t"].replace("Z", "+00:00")) >= end_burst]
+    run = 0
+    for i, x in enumerate(secs):
+        # recovered when queue is drained (queue_len small) and success within 5% of base
+        if abs(x["success"] - base) <= 0.05 * base and x["queue_len"] < base:
+            run += 1
+            if run >= 10:
+                return i - 9
+        else:
+            run = 0
+    return len(secs)
 
 
 def bootstrap_ci(logs, n=10000, seed=1234):
@@ -84,11 +109,15 @@ def fix_g1(r):
 
 def run_ok(r):
     fix_g1(r)
-    hard = {k: v for k, v in r["gates"].items() if k not in SOFT_GATES}
+    soft = set(SOFT_GATES)
+    if r["config"].get("burst_factor", 1) > 1:
+        # S3 burst deliberately exceeds capacity: queue/drop gates are reported, not exclusion criteria
+        soft |= {"G4_queue_delay", "G5_errors"}
+    hard = {k: v for k, v in r["gates"].items() if k not in soft}
     g = all(v["pass"] for v in hard.values())
     azok = True if r["_azmon"] is None else r["_azmon"]["gate_G6_platform"]["pass"]
     invok = True if r["_inv"] is None else r["_inv"]["violations"] == 0
-    soft_failed = [k for k in SOFT_GATES if k in r["gates"] and not r["gates"][k]["pass"]]
+    soft_failed = [k for k in soft if k in r["gates"] and not r["gates"][k]["pass"]]
     return g and azok and invok, {"gates": g, "azmon_G6": azok, "invariants_G9": invok, "azmon_present": r["_azmon"] is not None, "soft_failed": soft_failed}
 
 
