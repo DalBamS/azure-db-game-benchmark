@@ -1,6 +1,6 @@
 # v1 vs v2 paired analysis
 
-Generated 2026-08-17T23:36:06.444940+00:00
+Generated 2026-08-18T00:45:03.580917+00:00
 
 ## C1 / S1 / 5500 arrivals/s  (postgres vs horizon)
 
@@ -23,11 +23,11 @@ pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_
 
 Repetition gate summary:
 - rep 1 postgres: ok=True tps=5500 p99=27391us azmon=True inv=True
-- rep 1 horizon: ok=True tps=5500 p99=4379us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 1 horizon: ok=True tps=5500 p99=4379us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 2 postgres: ok=True tps=5500 p99=31935us azmon=True inv=True
-- rep 2 horizon: ok=True tps=5500 p99=4407us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 2 horizon: ok=True tps=5500 p99=4407us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 3 postgres: ok=True tps=5500 p99=87871us azmon=True inv=True
-- rep 3 horizon: ok=True tps=5500 p99=4235us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 3 horizon: ok=True tps=5500 p99=4235us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 
 ## C5 / S1 / 5500 arrivals/s  (postgres vs horizon)
 
@@ -50,15 +50,15 @@ pairs: 2 usable of 5 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_
 
 Repetition gate summary:
 - rep 1 postgres: ok=True tps=5500 p99=55007us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 1 horizon: ok=True tps=5500 p99=3691us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 1 horizon: ok=True tps=5500 p99=3691us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 2 postgres: ok=False tps=5405 p99=15613951us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 2 horizon: ok=True tps=5500 p99=3701us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 2 horizon: ok=True tps=5500 p99=3701us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 3 postgres: ok=False tps=5500 p99=3864575us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G4_queue_delay'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 3 horizon: ok=True tps=5500 p99=3683us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 3 horizon: ok=True tps=5500 p99=3683us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 4 postgres: ok=True tps=5500 p99=14935us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 4 horizon: ok=True tps=5500 p99=3699us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 4 horizon: ok=True tps=5500 p99=3699us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 5 postgres: ok=False tps=5500 p99=1354751us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G4_queue_delay'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 5 horizon: ok=True tps=5500 p99=3707us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 5 horizon: ok=True tps=5500 p99=3707us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 
 ## C5 / S2 / 3300 arrivals/s  (postgres vs horizon)
 
@@ -80,12 +80,12 @@ pairs: 0 usable of 3 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_
 | Dropped arrivals (queue overflow) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
 
 Repetition gate summary:
-- rep 1 postgres: ok=False tps=3300 p99=371711us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
-- rep 1 horizon: ok=True tps=3300 p99=3965us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
-- rep 2 postgres: ok=False tps=3263 p99=11665407us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
-- rep 2 horizon: ok=True tps=3300 p99=3981us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
-- rep 3 postgres: ok=False tps=3194 p99=20299775us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
-- rep 3 horizon: ok=True tps=3300 p99=3953us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 1 postgres: ok=False tps=3300 p99=371711us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 1 horizon: ok=True tps=3300 p99=3965us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 2 postgres: ok=False tps=3263 p99=11665407us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 2 horizon: ok=True tps=3300 p99=3981us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 3 postgres: ok=False tps=3194 p99=20299775us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 3 horizon: ok=True tps=3300 p99=3953us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 
 ## C5 / S3 / 2200 arrivals/s  (postgres vs horizon)
 
@@ -108,11 +108,11 @@ pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_
 
 Repetition gate summary:
 - rep 1 postgres: ok=True tps=3080 p99=1449983us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G4_queue_delay'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G4_queue_delay'])
-- rep 1 horizon: ok=True tps=3080 p99=3799us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 1 horizon: ok=True tps=3080 p99=3799us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 2 postgres: ok=True tps=3080 p99=16799us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 2 horizon: ok=True tps=3080 p99=3815us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 2 horizon: ok=True tps=3080 p99=3815us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 3 postgres: ok=True tps=3080 p99=13495us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 3 horizon: ok=True tps=3080 p99=3811us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 3 horizon: ok=True tps=3080 p99=3811us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 
 ## C7 / S1 / 5500 arrivals/s  (postgres vs horizon)
 
@@ -135,8 +135,35 @@ pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_
 
 Repetition gate summary:
 - rep 1 postgres: ok=True tps=5500 p99=6947us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 1 horizon: ok=True tps=5500 p99=3727us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 1 horizon: ok=True tps=5500 p99=3727us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 2 postgres: ok=True tps=5500 p99=7655us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 2 horizon: ok=True tps=5500 p99=3729us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 2 horizon: ok=True tps=5500 p99=3729us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 3 postgres: ok=True tps=5500 p99=62495us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
-- rep 3 horizon: ok=True tps=5500 p99=3719us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G2_storage_used', 'G1_dataset_vs_bufferpool'])
+- rep 3 horizon: ok=True tps=5500 p99=3719us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+
+## C7 / S4 / 3300 arrivals/s  (postgres vs horizon)
+
+pairs: 2 usable of 3 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+
+| Outcome | n | postgres median | horizon median | postgres CV% | horizon CV% | Δ% (horizon vs postgres, geo-mean) | 95% CI | note |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| Throughput (success TPS) | 2 | 3,300.0 | 3,300.0 | 0.0002 | 0.0002 | +0.00% | [+0.00%, +0.00%] | horizon higher (better); n=2<5 (below protocol baseline) |
+| Latency p50 (us) | 2 | 3,781.0 | 2,608.0 | 0.6733 | 0.1627 | -31.02% | [-31.27%, -30.77%] | horizon lower (better); n=2<5 (below protocol baseline) |
+| Latency p95 (us) | 2 | 6,989.0 | 3,591.0 | 11.5 | 0.2363 | -48.45% | [-52.55%, -44.00%] | horizon lower (better); n=2<5 (below protocol baseline) |
+| Latency p99 (us) | 2 | 20,427.0 | 3,967.0 | 77.6 | 0.4278 | -76.77% | [-87.50%, -56.86%] | horizon lower (better); n=2<5 (below protocol baseline) |
+| Latency p99.9 (us) | 2 | 48,759.0 | 5,169.0 | 63.3 | 2.5 | -88.15% | [-92.81%, -80.47%] | horizon lower (better); n=2<5 (below protocol baseline) |
+| Error rate | 2 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+| Server read IOPS | 2 | 358.8 | 0.3308 | 3.7 | 141.4 | - | - |  |
+| Server write IOPS | 2 | 836.7 | 1,642.4 | 44.4 | 3.7 | - | - |  |
+| Buffer pool hit ratio | 2 | 0.9945 | 1.0000 | 0.0199 | 0.0007 | - | - |  |
+| Service time p99 (us, excl. queue) | 2 | 20,219.0 | 3,750.0 | 77.8 | 0.2640 | -77.79% | [-88.06%, -58.69%] | horizon lower (better); n=2<5 (below protocol baseline) |
+| Burst recovery time (s, S3 only) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Dropped arrivals (queue overflow) | 2 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+
+Repetition gate summary:
+- rep 1 postgres: ok=True tps=3300 p99=31631us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 1 horizon: ok=True tps=3300 p99=3955us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 2 postgres: ok=True tps=3300 p99=9223us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 2 horizon: ok=True tps=3300 p99=3979us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 3 postgres: ok=False tps=3300 p99=3463167us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used', 'G4_queue_delay'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 3 horizon: ok=True tps=3300 p99=3991us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])

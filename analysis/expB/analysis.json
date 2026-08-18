@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-17T23:16:06.307691+00:00",
+ "generated_at": "2026-08-18T00:45:01.258227+00:00",
  "cells": [
   {
    "case": "C1",
@@ -1567,6 +1567,315 @@
       33.203461428044136
      ],
      "note": "v2 higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "burst_recovery_s": {
+     "label": "Burst recovery time (s, S3 only)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "drop_rate": {
+     "label": "Dropped arrivals (queue overflow)",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    }
+   },
+   "arms": [
+    "v1",
+    "v2"
+   ],
+   "n_pairs_total": 3,
+   "n_pairs_usable": 3
+  },
+  {
+   "case": "C7",
+   "scenario": "S4",
+   "rate": 3000,
+   "reps": {
+    "1": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G2_storage_used"
+      ],
+      "tps": 2999.9840012203263,
+      "p99_us": 28847,
+      "measure_from": "2026-08-17T23:47:53.023661481Z",
+      "measure_to": "2026-08-17T23:57:53.023861238Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G2_storage_used"
+      ],
+      "tps": 2999.994607635705,
+      "p99_us": 18495,
+      "measure_from": "2026-08-17T23:47:53.461619293Z",
+      "measure_to": "2026-08-17T23:57:53.461697766Z"
+     }
+    },
+    "2": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G2_storage_used"
+      ],
+      "tps": 2999.996200557257,
+      "p99_us": 28591,
+      "measure_from": "2026-08-18T00:00:57.977886678Z",
+      "measure_to": "2026-08-18T00:10:57.9779799Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G2_storage_used"
+      ],
+      "tps": 2999.999365960134,
+      "p99_us": 18559,
+      "measure_from": "2026-08-18T00:00:58.582865495Z",
+      "measure_to": "2026-08-18T00:10:58.582992303Z"
+     }
+    },
+    "3": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G2_storage_used"
+      ],
+      "tps": 2999.999530670073,
+      "p99_us": 26255,
+      "measure_from": "2026-08-18T00:14:04.243168122Z",
+      "measure_to": "2026-08-18T00:24:04.243261988Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G2_storage_used"
+      ],
+      "tps": 3000.0111832398643,
+      "p99_us": 18671,
+      "measure_from": "2026-08-18T00:14:04.09666045Z",
+      "measure_to": "2026-08-18T00:24:04.096757135Z"
+     }
+    }
+   },
+   "outcomes": {
+    "success_tps": {
+     "label": "Throughput (success TPS)",
+     "n": 3,
+     "v1_median": 2999.996200557257,
+     "v2_median": 2999.999365960134,
+     "v1_cv_pct": 0.0002725323931720268,
+     "v2_cv_pct": 0.0002844878126678666,
+     "pct_change": 0.00028249381447409405,
+     "ci95": [
+      0.00010551356286470082,
+      0.0003884190538094856
+     ],
+     "note": "v2 higher (better); n=3<5 (below protocol baseline)"
+    },
+    "p50_us": {
+     "label": "Latency p50 (us)",
+     "n": 3,
+     "v1_median": 14951,
+     "v2_median": 12055,
+     "v1_cv_pct": 1.2425587671651188,
+     "v2_cv_pct": 0.11486700207702079,
+     "pct_change": -19.16813702265314,
+     "ci95": [
+      -19.980125869493214,
+      -18.14354586813336
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
+    },
+    "p95_us": {
+     "label": "Latency p95 (us)",
+     "n": 3,
+     "v1_median": 22111,
+     "v2_median": 16127,
+     "v1_cv_pct": 2.2067130468590532,
+     "v2_cv_pct": 0.24803125193774417,
+     "pct_change": -26.430581783198658,
+     "ci95": [
+      -27.81890788351954,
+      -24.364912280701756
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
+    },
+    "p99_us": {
+     "label": "Latency p99 (us)",
+     "n": 3,
+     "v1_median": 28591,
+     "v2_median": 18559,
+     "v1_cv_pct": 5.119919091949279,
+     "v2_cv_pct": 0.4795920850889924,
+     "pct_change": -33.35849119194041,
+     "ci95": [
+      -35.88588068083336,
+      -28.885926490192347
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
+    },
+    "p999_us": {
+     "label": "Latency p99.9 (us)",
+     "n": 3,
+     "v1_median": 88255,
+     "v2_median": 28447,
+     "v1_cv_pct": 96.00996738898944,
+     "v2_cv_pct": 1.4739751266697374,
+     "pct_change": -79.09706966002301,
+     "ci95": [
+      -92.52878538654662,
+      -61.11194652157865
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
+    },
+    "error_rate": {
+     "label": "Error rate",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "read_iops": {
+     "label": "Server read IOPS",
+     "n": 3,
+     "v1_median": 520.5715002199589,
+     "v2_median": 523.7712277175506,
+     "v1_cv_pct": 1.7046492303693987,
+     "v2_cv_pct": 2.4305039179491805,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "write_iops": {
+     "label": "Server write IOPS",
+     "n": 3,
+     "v1_median": 2295.4228227323392,
+     "v2_median": 14425.84596191367,
+     "v1_cv_pct": 1.5527499281302142,
+     "v2_cv_pct": 0.9426196735052932,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "bp_hit": {
+     "label": "Buffer pool hit ratio",
+     "n": 3,
+     "v1_median": 0.9960045126268728,
+     "v2_median": 0.9957929300318242,
+     "v1_cv_pct": 0.006683505969111207,
+     "v2_cv_pct": 0.008265315072319474,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "service_p99_us": {
+     "label": "Service time p99 (us, excl. queue)",
+     "n": 3,
+     "v1_median": 27567,
+     "v2_median": 18399,
+     "v1_cv_pct": 4.443382585411494,
+     "v2_cv_pct": 0.4374417460549059,
+     "pct_change": -32.5349126438256,
+     "ci95": [
+      -35.365036838580046,
+      -28.81884308971251
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
     },
     "burst_recovery_s": {
      "label": "Burst recovery time (s, S3 only)",

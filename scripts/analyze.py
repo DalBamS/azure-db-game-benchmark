@@ -113,6 +113,9 @@ def run_ok(r):
     if r["config"].get("burst_factor", 1) > 1:
         # S3 burst deliberately exceeds capacity: queue/drop gates are reported, not exclusion criteria
         soft |= {"G4_queue_delay", "G5_errors"}
+    if r["config"].get("scenario", "").upper() == "S4":
+        # hotspot concentrates 50% of ops on 1,000 keys: buffer hit ratio > 99% is by design (read IOPS still > 0)
+        soft |= {"G2_storage_used"}
     hard = {k: v for k, v in r["gates"].items() if k not in soft}
     g = all(v["pass"] for v in hard.values())
     azok = True if r["_azmon"] is None else r["_azmon"]["gate_G6_platform"]["pass"]

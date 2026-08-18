@@ -1,0 +1,8 @@
+{
+ "negative_inventory_rows": 0,
+ "negative_balance_rows": 0,
+ "ledger_amount_sum": 253984697,
+ "spent_from_balances": 253984697,
+ "ledger_matches_balances": true,
+ "violations": 0
+}

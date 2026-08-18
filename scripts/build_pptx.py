@@ -133,7 +133,7 @@ def overview_slide(an, exp_title, arm_desc):
 def cell_slides(an, exp_title, chart_dir, arm_desc):
     for ci, cell in enumerate(an["cells"]):
         A, B = cell["arms"]
-        scen_note = {"S1": "S1 normal play (65% read)", "S2": "S2 write-heavy (80% write)", "S3": "S3 login burst: base rate ×3 for 120 s at t+240 s", "S4": "S4 hotspot"}.get(cell["scenario"], cell["scenario"])
+        scen_note = {"S1": "S1 normal play (65% read)", "S2": "S2 write-heavy (80% write)", "S3": "S3 login burst: base rate ×3 for 120 s at t+240 s", "S4": "S4 hotspot: 50% of ops on 1,000 hot accounts (write-heavy mix); G2 soft (hit ratio > 99% by design)"}.get(cell["scenario"], cell["scenario"])
         case_note = {"C1": "8 vCore / Same-zone HA", "C5": "16 vCore / Same-zone HA", "C7": "16 vCore / No-HA (HorizonDB keeps replicaCount 1 — minimum allowed)", "C3": "8 vCore / No-HA"}.get(cell["case"], cell["case"])
         s = section(f"{exp_title} — {cell['case']} / {cell['scenario']} @ {cell['rate']:,}/s", f"{case_note} · {scen_note}  |  {arm_desc}  |  usable pairs {cell['n_pairs_usable']}/{cell['n_pairs_total']} (10-min open-loop, arms concurrent)")
         table(s, 0.6, 1.5, 12.1, outcome_rows(cell), col_widths=[2.0, 1.6, 1.6, 1.4, 2.2, 0.8, 2.5], size=11)
@@ -220,7 +220,7 @@ def main(expB_dir, expA_dir, out):
 
     s = section("Limitations & next steps")
     bullets(s, 0.6, 1.4, 12.1, 5.6, [
-        "Cases run: C1 (8 vCore/HA), C5 (16 vCore/HA), C7 (16 vCore/No-HA); scenarios S1 (C1: 3 reps, C5: 5 reps, C7: 3 reps), S2 and S3 at C5 (3 reps). Not run: S4, C3, and the read-replica cases C2/C4/C6/C8 (client replica routing not implemented/validated in this time box). HorizonDB cannot be configured with 0 replicas (API minimum 1), so 'No-HA' has no exact HorizonDB counterpart.",
+        "Cases run: C1 (8 vCore/HA), C5 (16 vCore/HA), C7 (16 vCore/No-HA); scenarios S1 (C1: 3 reps, C5: 5 reps, C7: 3 reps), S2 and S3 at C5 (3 reps). Not run: C3 and the read-replica cases C2/C4/C6/C8 (client replica routing not implemented/validated in this time box). HorizonDB cannot be configured with 0 replicas (API minimum 1), so 'No-HA' has no exact HorizonDB counterpart.",
         "S3 (login burst ×3): MySQL arms could not absorb 6,000/s bursts (queue overflow, 4–7% dropped arrivals → G5 fail on both; reported as burst behaviour, not excluded from the burst slide). PG/HorizonDB absorbed the 6,600/s burst with 0 drops.",
         "Exp B confounds that cannot be removed on the platform: compute generation (v5 vs v6) and innodb_doublewrite (OFF vs ON). Effects should be read as 'SSD v1 product configuration vs SSD v2 product configuration'.",
         "Exp A: HorizonDB exposes far more cache than the Flexible Server SKU with the same vCores; the dataset would need to exceed ~90 GiB to make HorizonDB storage-bound. HorizonDB storage IOPS/memory are not exposed by the preview API.",

@@ -1,6 +1,6 @@
 # v1 vs v2 paired analysis
 
-Generated 2026-08-17T23:16:06.307691+00:00
+Generated 2026-08-18T00:45:01.258227+00:00
 
 ## C1 / S1 / 5000 arrivals/s  (v1 vs v2)
 
@@ -140,3 +140,30 @@ Repetition gate summary:
 - rep 2 v2: ok=True tps=5000 p99=32431us azmon=True inv=True
 - rep 3 v1: ok=True tps=5000 p99=25983us azmon=True inv=True
 - rep 3 v2: ok=True tps=5000 p99=32895us azmon=True inv=True
+
+## C7 / S4 / 3000 arrivals/s  (v1 vs v2)
+
+pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: none)
+
+| Outcome | n | v1 median | v2 median | v1 CV% | v2 CV% | Δ% (v2 vs v1, geo-mean) | 95% CI | note |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| Throughput (success TPS) | 3 | 3,000.0 | 3,000.0 | 0.0003 | 0.0003 | +0.00% | [+0.00%, +0.00%] | v2 higher (better); n=3<5 (below protocol baseline) |
+| Latency p50 (us) | 3 | 14,951.0 | 12,055.0 | 1.2 | 0.1149 | -19.17% | [-19.98%, -18.14%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Latency p95 (us) | 3 | 22,111.0 | 16,127.0 | 2.2 | 0.2480 | -26.43% | [-27.82%, -24.36%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Latency p99 (us) | 3 | 28,591.0 | 18,559.0 | 5.1 | 0.4796 | -33.36% | [-35.89%, -28.89%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Latency p99.9 (us) | 3 | 88,255.0 | 28,447.0 | 96.0 | 1.5 | -79.10% | [-92.53%, -61.11%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Error rate | 3 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+| Server read IOPS | 3 | 520.6 | 523.8 | 1.7 | 2.4 | - | - |  |
+| Server write IOPS | 3 | 2,295.4 | 14,425.8 | 1.6 | 0.9426 | - | - |  |
+| Buffer pool hit ratio | 3 | 0.9960 | 0.9958 | 0.0067 | 0.0083 | - | - |  |
+| Service time p99 (us, excl. queue) | 3 | 27,567.0 | 18,399.0 | 4.4 | 0.4374 | -32.53% | [-35.37%, -28.82%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Burst recovery time (s, S3 only) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Dropped arrivals (queue overflow) | 3 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+
+Repetition gate summary:
+- rep 1 v1: ok=True tps=3000 p99=28847us azmon=True inv=True FAILED: ['G2_storage_used'] (soft-gate warnings: ['G2_storage_used'])
+- rep 1 v2: ok=True tps=3000 p99=18495us azmon=True inv=True FAILED: ['G2_storage_used'] (soft-gate warnings: ['G2_storage_used'])
+- rep 2 v1: ok=True tps=3000 p99=28591us azmon=True inv=True FAILED: ['G2_storage_used'] (soft-gate warnings: ['G2_storage_used'])
+- rep 2 v2: ok=True tps=3000 p99=18559us azmon=True inv=True FAILED: ['G2_storage_used'] (soft-gate warnings: ['G2_storage_used'])
+- rep 3 v1: ok=True tps=3000 p99=26255us azmon=True inv=True FAILED: ['G2_storage_used'] (soft-gate warnings: ['G2_storage_used'])
+- rep 3 v2: ok=True tps=3000 p99=18671us azmon=True inv=True FAILED: ['G2_storage_used'] (soft-gate warnings: ['G2_storage_used'])

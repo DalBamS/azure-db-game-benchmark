@@ -28,3 +28,4 @@
 - 22:25 HA disabled on MySQL v1/v2 (→ C7); 22:45 PG HA disabled (`--zonal-resiliency Disabled`); HorizonDB replicaCount cannot be < 1 (API) → HZ unchanged for C7.
 - 22:27–23:29 C7/S1 ×3: Exp B v2 p50 −33.7% but p99 +30% [+27%, +33%] (v2 32.6 ms vs v1 24.8 ms, low CV; same read IOPS/hit ratio) — HA-off v2 tail worse, direction opposite to S2/C1; Exp A PG (warm, no HA) p99 7–8 ms (rep 3: 62 ms) vs HZ 3.7 ms (−75% [−94%, −46%]).
 - 23:35 Final invariant checks: MySQL v1/v2 and PG/HZ all 0 violations, ledger sums match (results/exp*/final-invariants-*.json). Deck rebuilt: 38 slides.
+- 23:45–00:26 S4 hotspot at C7 (both experiments): Exp B @3000/s v2 p50 −19.2%, p99 −33.4% [−35.9%, −28.9%] (3/3; G2 soft for hotspot: hit ratio 99.6% by design, read IOPS ~510); Exp A @3300/s 2/3 usable, HZ p99 −76.8% [−87.5%, −56.9%]. Deck rebuilt.
