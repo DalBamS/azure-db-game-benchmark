@@ -29,3 +29,7 @@
 - 22:27–23:29 C7/S1 ×3: Exp B v2 p50 −33.7% but p99 +30% [+27%, +33%] (v2 32.6 ms vs v1 24.8 ms, low CV; same read IOPS/hit ratio) — HA-off v2 tail worse, direction opposite to S2/C1; Exp A PG (warm, no HA) p99 7–8 ms (rep 3: 62 ms) vs HZ 3.7 ms (−75% [−94%, −46%]).
 - 23:35 Final invariant checks: MySQL v1/v2 and PG/HZ all 0 violations, ledger sums match (results/exp*/final-invariants-*.json). Deck rebuilt: 38 slides.
 - 23:45–00:26 S4 hotspot at C7 (both experiments): Exp B @3000/s v2 p50 −19.2%, p99 −33.4% [−35.9%, −28.9%] (3/3; G2 soft for hotspot: hit ratio 99.6% by design, read IOPS ~510); Exp A @3300/s 2/3 usable, HZ p99 −76.8% [−87.5%, −56.9%]. Deck rebuilt.
+
+## 2026-08-24
+
+- KRAFTON 월간 보고 디자인(20260715 덱에서 추출: Malgun Gothic, 네이비 0A2540/블루 0078D4/틸 17B6C4, 카드+액센트 바, 날짜·페이지 푸터)에 맞춘 한글 일반 독자용 최종 보고서 생성: `scripts/build_pptx_kr.py` → `report/20260824_KRAFTON_DB_Benchmark.pptx` (20장). 첨부받은 20260817 덱은 암호화되어 있어 같은 시리즈 7월 덱을 디자인 기준으로 사용. 응답시간 분포 차트는 3×2 배열로 재생성(charts.py). PowerPoint COM으로 전 슬라이드 렌더링 QA 수행.

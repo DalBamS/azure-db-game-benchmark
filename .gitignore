@@ -1,3 +1,5 @@
 .secrets/
 build/
 results/**/*.log
+report/krafton-template.pptx
+report/qa/

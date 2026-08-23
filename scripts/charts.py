@@ -59,9 +59,11 @@ def percentile_chart(cells, out):
     """cells: {label: {arm: [runs]}}"""
     labels = list(cells.keys())
     pcts = ["p50_us", "p95_us", "p99_us", "p999_us"]
-    fig, axes = plt.subplots(1, len(labels), figsize=(5 * len(labels), 4.5), squeeze=False)
+    ncol = min(3, len(labels))
+    nrow = (len(labels) + ncol - 1) // ncol
+    fig, axes = plt.subplots(nrow, ncol, figsize=(5 * ncol, 4.0 * nrow), squeeze=False)
     for i, lab in enumerate(labels):
-        ax = axes[0][i]
+        ax = axes[i // ncol][i % ncol]
         arms = sorted(cells[lab].keys())
         w = 0.38
         for j, arm in enumerate(arms):
@@ -74,6 +76,8 @@ def percentile_chart(cells, out):
             ax.errorbar(x, med, yerr=[[m - l for m, l in zip(med, lo)], [h - m for m, h in zip(med, hi)]], fmt="none", ecolor="black", capsize=3, lw=0.8)
         ax.set_xticks(range(len(pcts))); ax.set_xticklabels(["p50", "p95", "p99", "p99.9"])
         ax.set_yscale("log"); ax.set_ylabel("latency ms (log)"); ax.set_title(lab); ax.grid(alpha=0.3, axis="y"); ax.legend(fontsize=8)
+    for j in range(len(labels), nrow * ncol):
+        axes[j // ncol][j % ncol].axis("off")
     fig.tight_layout(); fig.savefig(out, dpi=130); plt.close(fig)
 
 
