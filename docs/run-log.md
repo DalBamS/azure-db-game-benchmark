@@ -33,3 +33,7 @@
 ## 2026-08-24
 
 - KRAFTON 월간 보고 디자인(20260715 덱에서 추출: Malgun Gothic, 네이비 0A2540/블루 0078D4/틸 17B6C4, 카드+액센트 바, 날짜·페이지 푸터)에 맞춘 한글 일반 독자용 최종 보고서 생성: `scripts/build_pptx_kr.py` → `report/20260824_KRAFTON_DB_Benchmark.pptx` (20장). 첨부받은 20260817 덱은 암호화되어 있어 같은 시리즈 7월 덱을 디자인 기준으로 사용. 응답시간 분포 차트는 3×2 배열로 재생성(charts.py). PowerPoint COM으로 전 슬라이드 렌더링 QA 수행.
+- 08-24 00:23–01:05 C3/S1(8vCore No-HA, PITR 복제 페어 v1b/v2b) 3/3 통과: v2 p50 약 −30%, p99는 v2가 높음 — C7의 "No-HA에서 v2 꼬리 열세" 패턴이 8vCore에서도 재현.
+- 08-24 01:20 as-provisioned IOPS 셀 취소: 128GiB에서 Premium SSD v1의 무료 IOPS가 5,037로 보고됨(플랫폼이 500 설정 거부) → 이 스토리지 크기에서는 기본 구성 = same-IOPS라 별도 셀이 무의미. 보고서에 기록.
+- 08-24 01:37 로컬 PC 멈춤 여파로 이 머신→VM SSH(2222) 타임아웃. VM 측 작업(setsid/nohup)은 영향 없음 — run-command로 우회 운영.
+- 08-24 02:11 HorizonDB 스케일 종료가 vCores=2로 확인(16 PATCH가 선행 축소 작업에 밀림) → 16 재요청. PG 쪽 1,000만 계정 적재는 run-command로 먼저 시작. MySQL 읽기 복제본(v1br/v2br, C4용) 생성 시작.

@@ -91,6 +91,7 @@ func main() {
 	sub := os.Args[1]
 	fs := flag.NewFlagSet(sub, flag.ExitOnError)
 	dsn := fs.String("dsn", "", "MySQL DSN (or MYSQL_DSN) / PG URL (or PG_DSN)")
+	roDsn := fs.String("ro-dsn", "", "optional read-replica DSN (or RO_DSN); read-only ops route here")
 	drv := fs.String("driver", "mysql", "mysql|pgx")
 	schema := fs.String("schema", "benchmark", "database name (for size queries)")
 	out := fs.String("out", "-", "output JSON path")
@@ -251,10 +252,17 @@ func main() {
 		if *scenario == "S4" || *scenario == "s4" || *scenario == "hotspot" {
 			hk, hp = 1000, 0.5
 		}
+		var rodb *sql.DB
+		if v := *roDsn; v != "" || os.Getenv("RO_DSN") != "" {
+			if v == "" {
+				v = os.Getenv("RO_DSN")
+			}
+			rodb = mustDB(v, *workers)
+		}
 		cfg := bench.RunConfig{Mode: *mode, Scenario: *scenario, TargetRate: *rate, Workers: *workers, WarmupSec: *warmup, WarmupMaxSec: *warmupMax, SteadyCVPct: *steadyCV,
 			MeasureSec: *measure, QueueSec: *queueSec, StmtTimeoutMs: *stmtTimeout, Accounts: *accounts, Slots: *slots, HotKeys: hk, HotProb: hp, Seed: *seed,
 			NICLimitBps: *nic, Label: *label, BurstAtSec: *burstAt, BurstSec: *burstSec, BurstFactor: *burstFactor}
-		r := &bench.Runner{DB: db, Cfg: cfg, Mix: mix, Log: logf, Env: env, Fetch: fetch}
+		r := &bench.Runner{DB: db, RODB: rodb, Cfg: cfg, Mix: mix, Log: logf, Env: env, Fetch: fetch}
 		res, err := r.Run(ctx)
 		if err != nil {
 			logf("run: %v", err)

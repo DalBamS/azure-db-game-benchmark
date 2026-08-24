@@ -6,8 +6,9 @@ source "$(dirname "$0")/common.sh"
 CASE="$1"; SCEN="$2"; RATE="$3"; REPS="${4:-3}"; MEASURE="${5:-600}"; WORKERS="${6:-256}"; WARMUP="${7:-120}"; shift 7 || shift $#
 EXTRA="$*"
 declare -A pids
-ACCOUNTS=$(python3 -c "import json,glob;f=sorted(glob.glob('$RESULTS/load-*-v1.json'))[-1];print(json.load(open(f))['approx_rows'].get('accounts',0))")
+ACCOUNTS=$(python3 -c "import json,glob;fs=sorted(glob.glob('$RESULTS/load-*-v1.json'));print(json.load(open(fs[-1]))['approx_rows'].get('accounts',0) if fs else 0)" || echo 0)
 ACCOUNTS=${ACCOUNTS_OVERRIDE:-$ACCOUNTS}
+[ "$ACCOUNTS" -gt 0 ] || { echo "no account count (set ACCOUNTS_OVERRIDE)"; exit 2; }
 OUT="$RESULTS/$CASE/$SCEN/rate$RATE"; mkdir -p "$OUT"
 echo "$(ts) case=$CASE scen=$SCEN rate=$RATE reps=$REPS measure=$MEASURE workers=$WORKERS warmup=$WARMUP accounts=$ACCOUNTS extra=$EXTRA" | tee -a "$OUT/run-case.log"
 for rep in $(seq "${REP_START:-1}" "$REPS"); do

@@ -89,6 +89,7 @@ type RunResult struct {
 	Env           *EnvSnapshot         `json:"env"`
 	Histogram     string               `json:"hdr_overall_b64,omitempty"`
 	MaxInFlight   int32                `json:"max_in_flight"`
+	ReplicaShare  float64              `json:"replica_share,omitempty"`
 	Gates         map[string]GateResult `json:"gates"`
 	GatesPassed   bool                 `json:"gates_passed"`
 }
@@ -107,6 +108,7 @@ type opStats struct {
 // Runner executes one arm run.
 type Runner struct {
 	DB   *sql.DB
+	RODB *sql.DB // optional read-replica pool; ops with Write=false use it
 	Cfg  RunConfig
 	Mix  *Mix
 	Log  func(string, ...any)
@@ -150,17 +152,33 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 	res := &RunResult{Config: cfg, Mix: r.Mix.Describe(), PerOp: map[string]*OpResult{}, ErrorClasses: map[string]uint64{}, Gates: map[string]GateResult{}}
 	res.StartedAt = time.Now().UTC()
 
-	// dedicated connections
+	// dedicated connections (per worker; a second set on the replica when RODB is set)
 	conns := make([]*sql.Conn, cfg.Workers)
+	var roConns []*sql.Conn
+	if r.RODB != nil {
+		roConns = make([]*sql.Conn, cfg.Workers)
+	}
 	for i := range conns {
 		c, err := r.DB.Conn(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("open conn %d: %w", i, err)
 		}
 		conns[i] = c
+		if roConns != nil {
+			rc, err := r.RODB.Conn(ctx)
+			if err != nil {
+				return nil, fmt.Errorf("open ro conn %d: %w", i, err)
+			}
+			roConns[i] = rc
+		}
 	}
 	defer func() {
 		for _, c := range conns {
+			if c != nil {
+				c.Close()
+			}
+		}
+		for _, c := range roConns {
 			if c != nil {
 				c.Close()
 			}
@@ -179,7 +197,7 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 	var measuring atomic.Bool
 	var inFlight atomic.Int32
 	var maxInFlight atomic.Int32
-	var secSuccess, secErrors, secArrivals atomic.Uint64
+	var secSuccess, secErrors, secArrivals, replicaOps atomic.Uint64
 	secHist := NewLatencyHist()
 
 	// admission queue
@@ -201,6 +219,10 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 		qd := start.Sub(scheduledAt)
 		op := r.Mix.Pick(w.Rng)
 		st := stats[op.Name]
+		if roConns != nil && !op.Write {
+			conn = roConns[w.ID]
+			replicaOps.Add(1)
+		}
 		inF := inFlight.Add(1)
 		for {
 			old := maxInFlight.Load()
@@ -243,7 +265,11 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 			// a broken connection is replaced so the worker keeps going
 			if cls == "conn" {
 				conn.Close()
-				if nc, e := r.DB.Conn(runCtx); e == nil {
+				if roConns != nil && !op.Write {
+					if nc, e := r.RODB.Conn(runCtx); e == nil {
+						roConns[w.ID] = nc
+					}
+				} else if nc, e := r.DB.Conn(runCtx); e == nil {
 					conns[w.ID] = nc
 				}
 			}
@@ -436,6 +462,9 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 	res.Seconds = seconds
 	secMu.Unlock()
 	res.MaxInFlight = maxInFlight.Load()
+	if r.RODB != nil && res.Overall.Attempts > 0 {
+		res.ReplicaShare = float64(replicaOps.Load()) / float64(res.Overall.Attempts)
+	}
 	if d, err := ComputeDelta(res.Status, res.MeasureFrom, res.MeasureTo); err == nil {
 		res.StatusDelta = d
 	} else {
