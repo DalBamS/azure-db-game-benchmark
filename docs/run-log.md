@@ -40,3 +40,5 @@
 - 08-25 00:49 로컬 PC 장시간 멈춤(약 22h) + MCAPS 야간 VM 자동종료로 피해 확인: soak는 15.9h 진행 후 사망(클라이언트 데이터 유실, JSON은 종료 시에만 기록), PG 1,000만 적재는 어제 03:00 UTC 완료(무사), v2br 생성 실패, HZ 16 vCore 스케일이 두 번째도 vCores=2로 종료.
 - 08-25 01:10 복구: VM 3대 재시작 + auto-shutdown off 시도, 이 머신→VM SSH 불능 지속(443도 차단) → run-command 운영으로 전환. 스토리지 SAS 전송은 MCAPS 정책(publicNetworkAccess 강제 Disabled)으로 불가 → 소스 base64를 run-command로 넣어 VM에서 Go 직접 빌드(양쪽 VM).
 - 08-25 01:20 gamebench에 30분 주기 체크포인트 추가(-checkpoint), soak 재시작(23h, C7/S1@5000). HZ는 8 vCore로는 성공 → 16 재시도(45분 기한, 실패 시 PG를 D8ds로 내려 8vCore 동급 비교로 전환). v2br 재생성 진행, 완료 시 C4(복제본 라우팅, RO_DSN) 자동 실행 예약.
+- 08-25 06:12 로컬 4h 추가 멈춤. 대용량 셀 rep1만 존재 확인 → rep2-3 setsid 재기동. v2br 생성이 InternalServerError로 반복 실패(Tracking 56d20eb6…) — SSD v2(PremiumV2 프리뷰 스토리지) 서버는 읽기 복제본 생성 미지원으로 판단, C4를 "v1 계열 복제본 라우팅 효과"(같은 서버에서 primary-only vs replica-routed 순차 3회)로 재정의.
+- 08-25 10:38 또 4h 로컬 멈춤. 대용량 rep2 완료 확인(rep3 루프 소실) → rep3 개별 setsid로 재실행. soak 정상(9.4h 경과, 체크포인트 정상). C4(v1 replica-effect) 시작.
