@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-18T00:45:03.580917+00:00",
+ "generated_at": "2026-08-25T22:10:41.571766+00:00",
  "cells": [
   {
    "case": "C1",
@@ -1638,6 +1638,294 @@
    ],
    "n_pairs_total": 3,
    "n_pairs_usable": 3
+  },
+  {
+   "case": "C7",
+   "scenario": "S1",
+   "rate": 5501,
+   "reps": {
+    "1": {
+     "postgres": {
+      "ok": false,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": false,
+       "G5_errors": false,
+       "G6_server_metrics": true,
+       "G7_steady_state": false
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 3566.8401838443183,
+      "p99_us": 35160063,
+      "measure_from": "2026-08-25T02:41:47.316353602Z",
+      "measure_to": "2026-08-25T02:51:47.317163757Z"
+     },
+     "horizon": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": false,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G1_dataset_vs_bufferpool",
+       "G2_storage_used"
+      ],
+      "tps": 5501.006579071503,
+      "p99_us": 3867,
+      "measure_from": "2026-08-25T02:35:49.917001709Z",
+      "measure_to": "2026-08-25T02:45:49.917193048Z"
+     }
+    },
+    "2": {
+     "postgres": {
+      "ok": false,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": false,
+       "G5_errors": false,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5086.993897249941,
+      "p99_us": 16924671,
+      "measure_from": "2026-08-25T06:16:33.578998056Z",
+      "measure_to": "2026-08-25T06:26:33.579128123Z"
+     },
+     "horizon": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": false,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G1_dataset_vs_bufferpool",
+       "G2_storage_used"
+      ],
+      "tps": 5501.005611381255,
+      "p99_us": 3889,
+      "measure_from": "2026-08-25T06:16:36.185916282Z",
+      "measure_to": "2026-08-25T06:26:36.186031383Z"
+     }
+    },
+    "3": {
+     "postgres": {
+      "ok": false,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": false,
+       "G5_errors": false,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5408.980316675329,
+      "p99_us": 8896511,
+      "measure_from": "2026-08-25T10:41:58.030778843Z",
+      "measure_to": "2026-08-25T10:51:58.030928593Z"
+     },
+     "horizon": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": false,
+       "G2_storage_used": false,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [
+       "G1_dataset_vs_bufferpool",
+       "G2_storage_used"
+      ],
+      "tps": 5501.007901164984,
+      "p99_us": 3953,
+      "measure_from": "2026-08-25T10:42:00.78865472Z",
+      "measure_to": "2026-08-25T10:52:00.788701857Z"
+     }
+    }
+   },
+   "outcomes": {
+    "success_tps": {
+     "label": "Throughput (success TPS)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "p50_us": {
+     "label": "Latency p50 (us)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "p95_us": {
+     "label": "Latency p95 (us)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "p99_us": {
+     "label": "Latency p99 (us)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "p999_us": {
+     "label": "Latency p99.9 (us)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "error_rate": {
+     "label": "Error rate",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "read_iops": {
+     "label": "Server read IOPS",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "write_iops": {
+     "label": "Server write IOPS",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "bp_hit": {
+     "label": "Buffer pool hit ratio",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "service_p99_us": {
+     "label": "Service time p99 (us, excl. queue)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "burst_recovery_s": {
+     "label": "Burst recovery time (s, S3 only)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "drop_rate": {
+     "label": "Dropped arrivals (queue overflow)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    }
+   },
+   "arms": [
+    "postgres",
+    "horizon"
+   ],
+   "n_pairs_total": 3,
+   "n_pairs_usable": 0
   },
   {
    "case": "C7",

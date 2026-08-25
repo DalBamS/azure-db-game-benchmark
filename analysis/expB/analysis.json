@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-18T00:45:01.258227+00:00",
+ "generated_at": "2026-08-25T22:10:33.876097+00:00",
  "cells": [
   {
    "case": "C1",
@@ -267,6 +267,303 @@
       157.38647709573067
      ],
      "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "burst_recovery_s": {
+     "label": "Burst recovery time (s, S3 only)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "drop_rate": {
+     "label": "Dropped arrivals (queue overflow)",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    }
+   },
+   "arms": [
+    "v1",
+    "v2"
+   ],
+   "n_pairs_total": 3,
+   "n_pairs_usable": 3
+  },
+  {
+   "case": "C3",
+   "scenario": "S1",
+   "rate": 5000,
+   "reps": {
+    "1": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.984421826802,
+      "p99_us": 28079,
+      "measure_from": "2026-08-24T00:25:47.291850054Z",
+      "measure_to": "2026-08-24T00:35:47.291919435Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.997855583538,
+      "p99_us": 32079,
+      "measure_from": "2026-08-24T00:29:27.474674139Z",
+      "measure_to": "2026-08-24T00:39:27.474731469Z"
+     }
+    },
+    "2": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.995712770343,
+      "p99_us": 24767,
+      "measure_from": "2026-08-24T00:42:32.340308944Z",
+      "measure_to": "2026-08-24T00:52:32.340823412Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.943107854863,
+      "p99_us": 40639,
+      "measure_from": "2026-08-24T00:42:32.864959409Z",
+      "measure_to": "2026-08-24T00:52:32.865186469Z"
+     }
+    },
+    "3": {
+     "v1": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.99925717511,
+      "p99_us": 27455,
+      "measure_from": "2026-08-24T00:55:37.874490137Z",
+      "measure_to": "2026-08-24T01:05:37.874579276Z"
+     },
+     "v2": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.119393293847,
+      "p99_us": 41887,
+      "measure_from": "2026-08-24T00:55:38.190954603Z",
+      "measure_to": "2026-08-24T01:05:38.191027406Z"
+     }
+    }
+   },
+   "outcomes": {
+    "success_tps": {
+     "label": "Throughput (success TPS)",
+     "n": 3,
+     "v1_median": 4999.995712770343,
+     "v2_median": 4999.997855583538,
+     "v1_cv_pct": 0.00015494875716353868,
+     "v2_cv_pct": 0.0018045293335861952,
+     "pct_change": 0.0005397563671349914,
+     "ci95": [
+      -0.0010520992117069028,
+      0.002402722731686957
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "p50_us": {
+     "label": "Latency p50 (us)",
+     "n": 3,
+     "v1_median": 3711,
+     "v2_median": 2573,
+     "v1_cv_pct": 4.941465056217518,
+     "v2_cv_pct": 0.8794283152613663,
+     "pct_change": -32.08686924869952,
+     "ci95": [
+      -36.191896594581166,
+      -29.199457259158756
+     ],
+     "note": "v2 lower (better); n=3<5 (below protocol baseline)"
+    },
+    "p95_us": {
+     "label": "Latency p95 (us)",
+     "n": 3,
+     "v1_median": 20799,
+     "v2_median": 28831,
+     "v1_cv_pct": 2.0163200525137075,
+     "v2_cv_pct": 13.60597480888165,
+     "pct_change": 30.162365892182798,
+     "ci95": [
+      8.663025409641412,
+      42.463579979806724
+     ],
+     "note": "v2 higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "p99_us": {
+     "label": "Latency p99 (us)",
+     "n": 3,
+     "v1_median": 27455,
+     "v2_median": 40639,
+     "v1_cv_pct": 6.574988871463298,
+     "v2_cv_pct": 13.975766368044328,
+     "pct_change": 41.945686864679146,
+     "ci95": [
+      14.24552156415826,
+      64.08527476077037
+     ],
+     "note": "v2 higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "p999_us": {
+     "label": "Latency p99.9 (us)",
+     "n": 3,
+     "v1_median": 79679,
+     "v2_median": 55167,
+     "v1_cv_pct": 73.03442646420248,
+     "v2_cv_pct": 12.763747160600424,
+     "pct_change": -44.61903733100898,
+     "ci95": [
+      -72.21031787081233,
+      9.809112442524736
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "error_rate": {
+     "label": "Error rate",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "read_iops": {
+     "label": "Server read IOPS",
+     "n": 3,
+     "v1_median": 1720.8985885548027,
+     "v2_median": 1730.7202182008384,
+     "v1_cv_pct": 3.575376502792362,
+     "v2_cv_pct": 0.8464315419188877,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "write_iops": {
+     "label": "Server write IOPS",
+     "n": 3,
+     "v1_median": 2347.488971975602,
+     "v2_median": 3095.34901171697,
+     "v1_cv_pct": 0.2502433681746374,
+     "v2_cv_pct": 0.5912280504593509,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "bp_hit": {
+     "label": "Buffer pool hit ratio",
+     "n": 3,
+     "v1_median": 0.9766301621119909,
+     "v2_median": 0.9765182123807319,
+     "v1_cv_pct": 0.07718716946126043,
+     "v2_cv_pct": 0.023372932497142927,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "service_p99_us": {
+     "label": "Service time p99 (us, excl. queue)",
+     "n": 3,
+     "v1_median": 26703,
+     "v2_median": 40447,
+     "v1_cv_pct": 6.275117356152885,
+     "v2_cv_pct": 13.967204178727435,
+     "pct_change": 43.592586441795625,
+     "ci95": [
+      14.968874815587775,
+      64.80055412948703
+     ],
+     "note": "v2 higher (worse); n=3<5 (below protocol baseline)"
     },
     "burst_recovery_s": {
      "label": "Burst recovery time (s, S3 only)",
@@ -1002,8 +1299,8 @@
       "invariants_G9": true,
       "azmon_present": true,
       "soft_failed": [
-       "G5_errors",
-       "G4_queue_delay"
+       "G4_queue_delay",
+       "G5_errors"
       ],
       "tps": 2597.9993949432605,
       "p99_us": 4464639,
@@ -1026,8 +1323,8 @@
       "invariants_G9": true,
       "azmon_present": true,
       "soft_failed": [
-       "G5_errors",
-       "G4_queue_delay"
+       "G4_queue_delay",
+       "G5_errors"
       ],
       "tps": 2700.579548539616,
       "p99_us": 4020223,
@@ -1052,8 +1349,8 @@
       "invariants_G9": true,
       "azmon_present": true,
       "soft_failed": [
-       "G5_errors",
-       "G4_queue_delay"
+       "G4_queue_delay",
+       "G5_errors"
       ],
       "tps": 2620.1892325946105,
       "p99_us": 4370431,
@@ -1076,8 +1373,8 @@
       "invariants_G9": true,
       "azmon_present": true,
       "soft_failed": [
-       "G5_errors",
-       "G4_queue_delay"
+       "G4_queue_delay",
+       "G5_errors"
       ],
       "tps": 2693.601989288791,
       "p99_us": 4032511,
@@ -1102,8 +1399,8 @@
       "invariants_G9": true,
       "azmon_present": true,
       "soft_failed": [
-       "G5_errors",
-       "G4_queue_delay"
+       "G4_queue_delay",
+       "G5_errors"
       ],
       "tps": 2614.1406650712424,
       "p99_us": 4390911,
@@ -1126,8 +1423,8 @@
       "invariants_G9": true,
       "azmon_present": true,
       "soft_failed": [
-       "G5_errors",
-       "G4_queue_delay"
+       "G4_queue_delay",
+       "G5_errors"
       ],
       "tps": 2689.560703777039,
       "p99_us": 4038655,

@@ -66,6 +66,14 @@ def slice_run(path):
 
 
 if __name__ == "__main__":
+    # --map v1=serverA,v2=serverB overrides the arm->server mapping (same RG/type as the base arm name)
+    if "--map" in sys.argv:
+        i = sys.argv.index("--map")
+        for pair in sys.argv[i + 1].split(","):
+            arm, srv = pair.split("=")
+            base = SERVERS.get(arm) or SERVERS["v1"]
+            SERVERS[arm] = (base[0], base[1], srv)
+        del sys.argv[i:i + 2]
     files = []
     for a in sys.argv[1:]:
         files += glob.glob(a)

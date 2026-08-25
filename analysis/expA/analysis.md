@@ -1,6 +1,6 @@
 # v1 vs v2 paired analysis
 
-Generated 2026-08-18T00:45:03.580917+00:00
+Generated 2026-08-25T22:10:41.571766+00:00
 
 ## C1 / S1 / 5500 arrivals/s  (postgres vs horizon)
 
@@ -140,6 +140,33 @@ Repetition gate summary:
 - rep 2 horizon: ok=True tps=5500 p99=3729us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 - rep 3 postgres: ok=True tps=5500 p99=62495us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool'] (soft-gate warnings: ['G1_dataset_vs_bufferpool'])
 - rep 3 horizon: ok=True tps=5500 p99=3719us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+
+## C7 / S1 / 5501 arrivals/s  (postgres vs horizon)
+
+pairs: 0 usable of 3 (hard-gate-failed pairs excluded; soft gates: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+
+| Outcome | n | postgres median | horizon median | postgres CV% | horizon CV% | Δ% (horizon vs postgres, geo-mean) | 95% CI | note |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| Throughput (success TPS) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Latency p50 (us) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Latency p95 (us) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Latency p99 (us) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Latency p99.9 (us) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Error rate | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Server read IOPS | 0 | - | - | - | - | - | - |  |
+| Server write IOPS | 0 | - | - | - | - | - | - |  |
+| Buffer pool hit ratio | 0 | - | - | - | - | - | - |  |
+| Service time p99 (us, excl. queue) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Burst recovery time (s, S3 only) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Dropped arrivals (queue overflow) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+
+Repetition gate summary:
+- rep 1 postgres: ok=False tps=3567 p99=35160063us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors', 'G7_steady_state']
+- rep 1 horizon: ok=True tps=5501 p99=3867us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 2 postgres: ok=False tps=5087 p99=16924671us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors']
+- rep 2 horizon: ok=True tps=5501 p99=3889us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
+- rep 3 postgres: ok=False tps=5409 p99=8896511us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors']
+- rep 3 horizon: ok=True tps=5501 p99=3953us azmon=True inv=True FAILED: ['G1_dataset_vs_bufferpool', 'G2_storage_used'] (soft-gate warnings: ['G1_dataset_vs_bufferpool', 'G2_storage_used'])
 
 ## C7 / S4 / 3300 arrivals/s  (postgres vs horizon)
 

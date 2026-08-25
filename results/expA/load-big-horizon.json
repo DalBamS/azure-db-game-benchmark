@@ -1,0 +1,49 @@
+{
+ "variables": {
+  "azure.extensions": "",
+  "block_size": "8192",
+  "checkpoint_timeout": "200s",
+  "effective_cache_size": "90213MB",
+  "effective_io_concurrency": "1",
+  "fsync": "on",
+  "full_page_writes": "off",
+  "huge_pages": "try",
+  "innodb_buffer_pool_size": "94595186688",
+  "max_connections": "500",
+  "max_wal_size": "12GB",
+  "max_worker_processes": "16",
+  "random_page_cost": "2",
+  "server_version": "17.9 (Azure HorizonDB (1b3bcd789c4)(release))",
+  "shared_buffers": "90213MB",
+  "ssl": "on",
+  "synchronous_commit": "on",
+  "wal_compression": "pglz",
+  "wal_level": "replica",
+  "work_mem": "4MB"
+ },
+ "table_gib": {
+  "accounts": 11.266090393066406,
+  "bench_meta": 0.00002288818359375,
+  "game_sessions": 0.0000152587890625,
+  "guild_members": 0.8454666137695312,
+  "guilds": 0.1111602783203125,
+  "inventory": 78.70918273925781,
+  "leaderboard": 0.9298171997070312,
+  "match_results": 0.00002288818359375,
+  "purchase_ledger": 0.00002288818359375
+ },
+ "total_gib": 91.86180114746094,
+ "approx_rows": {
+  "accounts": 9999739,
+  "bench_meta": 5,
+  "game_sessions": 0,
+  "guild_members": 10000989,
+  "guilds": 100000,
+  "inventory": 199994176,
+  "leaderboard": 9999721,
+  "match_results": 0,
+  "purchase_ledger": 0
+ },
+ "hostname": "",
+ "captured_at": "2026-08-25T02:27:23.130676368Z"
+}

@@ -1,0 +1,49 @@
+{
+ "variables": {
+  "azure.extensions": "",
+  "block_size": "8192",
+  "checkpoint_timeout": "10min",
+  "effective_cache_size": "48GB",
+  "effective_io_concurrency": "1",
+  "fsync": "on",
+  "full_page_writes": "on",
+  "huge_pages": "try",
+  "innodb_buffer_pool_size": "17179869184",
+  "max_connections": "3437",
+  "max_wal_size": "20GB",
+  "max_worker_processes": "8",
+  "random_page_cost": "2",
+  "server_version": "17.10",
+  "shared_buffers": "16GB",
+  "ssl": "on",
+  "synchronous_commit": "on",
+  "wal_compression": "pglz",
+  "wal_level": "replica",
+  "work_mem": "4MB"
+ },
+ "table_gib": {
+  "accounts": 11.266960144042969,
+  "bench_meta": 0.00002288818359375,
+  "game_sessions": 0.0000152587890625,
+  "guild_members": 0.8476333618164062,
+  "guilds": 0.1111602783203125,
+  "inventory": 78.70722961425781,
+  "leaderboard": 0.9316024780273438,
+  "match_results": 0.00002288818359375,
+  "purchase_ledger": 0.00002288818359375
+ },
+ "total_gib": 91.86466979980469,
+ "approx_rows": {
+  "accounts": 9999927,
+  "bench_meta": 5,
+  "game_sessions": 0,
+  "guild_members": 9999349,
+  "guilds": 100000,
+  "inventory": 199997408,
+  "leaderboard": 10000350,
+  "match_results": 0,
+  "purchase_ledger": 0
+ },
+ "hostname": "",
+ "captured_at": "2026-08-24T03:00:21.643758561Z"
+}

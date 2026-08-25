@@ -1,0 +1,302 @@
+{
+ "generated_at": "2026-08-25T22:10:36.072546+00:00",
+ "cells": [
+  {
+   "case": "C4",
+   "scenario": "S1",
+   "rate": 5000,
+   "reps": {
+    "1": {
+     "routed": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.992849000693,
+      "p99_us": 29007,
+      "measure_from": "2026-08-25T10:56:00.183772907Z",
+      "measure_to": "2026-08-25T11:06:00.183831027Z"
+     },
+     "primary": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.9311750651,
+      "p99_us": 30399,
+      "measure_from": "2026-08-25T10:42:49.653685317Z",
+      "measure_to": "2026-08-25T10:52:49.65374431Z"
+     }
+    },
+    "2": {
+     "routed": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.9926133843965,
+      "p99_us": 28079,
+      "measure_from": "2026-08-25T11:22:14.01632143Z",
+      "measure_to": "2026-08-25T11:32:14.016407824Z"
+     },
+     "primary": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 5000.008730481117,
+      "p99_us": 29455,
+      "measure_from": "2026-08-25T11:09:04.792594529Z",
+      "measure_to": "2026-08-25T11:19:04.792746871Z"
+     }
+    },
+    "3": {
+     "routed": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.985806977441,
+      "p99_us": 29407,
+      "measure_from": "2026-08-25T11:48:27.848003373Z",
+      "measure_to": "2026-08-25T11:58:27.848106536Z"
+     },
+     "primary": {
+      "ok": true,
+      "gates": {
+       "G10_duration": true,
+       "G1_dataset_vs_bufferpool": true,
+       "G2_storage_used": true,
+       "G3_client_headroom": true,
+       "G4_queue_delay": true,
+       "G5_errors": true,
+       "G6_server_metrics": true,
+       "G7_steady_state": true
+      },
+      "azmon_G6": true,
+      "invariants_G9": true,
+      "azmon_present": true,
+      "soft_failed": [],
+      "tps": 4999.985624019664,
+      "p99_us": 33727,
+      "measure_from": "2026-08-25T11:35:18.556382143Z",
+      "measure_to": "2026-08-25T11:45:18.556507261Z"
+     }
+    }
+   },
+   "outcomes": {
+    "success_tps": {
+     "label": "Throughput (success TPS)",
+     "n": 3,
+     "v1_median": 4999.9926133843965,
+     "v2_median": 4999.985624019664,
+     "v1_cv_pct": 7.998881164224013e-05,
+     "v2_cv_pct": 0.0007963891105392234,
+     "pct_change": -0.0003049346545158649,
+     "ci95": [
+      -0.0012334804759817075,
+      0.00032234241060802304
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "p50_us": {
+     "label": "Latency p50 (us)",
+     "n": 3,
+     "v1_median": 3823,
+     "v2_median": 3991,
+     "v1_cv_pct": 4.2740625240423435,
+     "v2_cv_pct": 1.168271391900123,
+     "pct_change": 1.3493937183734817,
+     "ci95": [
+      -2.9189978107516446,
+      4.6037143604499065
+     ],
+     "note": "CI includes 0; n=3<5 (below protocol baseline)"
+    },
+    "p95_us": {
+     "label": "Latency p95 (us)",
+     "n": 3,
+     "v1_median": 22911,
+     "v2_median": 23599,
+     "v1_cv_pct": 0.7569717938252701,
+     "v2_cv_pct": 1.0566017211324257,
+     "pct_change": 2.890720986263995,
+     "ci95": [
+      1.0431607771547835,
+      4.093335097701911
+     ],
+     "note": "primary higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "p99_us": {
+     "label": "Latency p99 (us)",
+     "n": 3,
+     "v1_median": 29007,
+     "v2_median": 30399,
+     "v1_cv_pct": 2.3629752814449745,
+     "v2_cv_pct": 7.194183200206928,
+     "pct_change": 8.032299738619741,
+     "ci95": [
+      4.798841658909914,
+      14.690379841534318
+     ],
+     "note": "primary higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "p999_us": {
+     "label": "Latency p99.9 (us)",
+     "n": 3,
+     "v1_median": 89279,
+     "v2_median": 204287,
+     "v1_cv_pct": 55.554003929919055,
+     "v2_cv_pct": 42.3722318261465,
+     "pct_change": 123.50782180445256,
+     "ci95": [
+      31.35822632604377,
+      234.3395423335835
+     ],
+     "note": "primary higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "error_rate": {
+     "label": "Error rate",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "read_iops": {
+     "label": "Server read IOPS",
+     "n": 3,
+     "v1_median": 603.2509367628077,
+     "v2_median": 1775.8521216308263,
+     "v1_cv_pct": 0.9497478002564691,
+     "v2_cv_pct": 2.1318117144115933,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "write_iops": {
+     "label": "Server write IOPS",
+     "n": 3,
+     "v1_median": 2232.2562940445,
+     "v2_median": 2217.76628257312,
+     "v1_cv_pct": 0.8351099618703914,
+     "v2_cv_pct": 0.542720178301812,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "bp_hit": {
+     "label": "Buffer pool hit ratio",
+     "n": 3,
+     "v1_median": 0.9863074454435065,
+     "v2_median": 0.9761055159163907,
+     "v1_cv_pct": 0.01428949646246627,
+     "v2_cv_pct": 0.042169420275944086,
+     "pct_change": null,
+     "ci95": null,
+     "note": ""
+    },
+    "service_p99_us": {
+     "label": "Service time p99 (us, excl. queue)",
+     "n": 3,
+     "v1_median": 28511,
+     "v2_median": 29311,
+     "v1_cv_pct": 1.5666742254102979,
+     "v2_cv_pct": 5.343742060043836,
+     "pct_change": 5.781343928721405,
+     "ci95": [
+      2.8059345515765832,
+      10.821684991849057
+     ],
+     "note": "primary higher (worse); n=3<5 (below protocol baseline)"
+    },
+    "burst_recovery_s": {
+     "label": "Burst recovery time (s, S3 only)",
+     "n": 0,
+     "v1_median": null,
+     "v2_median": null,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    },
+    "drop_rate": {
+     "label": "Dropped arrivals (queue overflow)",
+     "n": 3,
+     "v1_median": 0,
+     "v2_median": 0,
+     "v1_cv_pct": null,
+     "v2_cv_pct": null,
+     "pct_change": null,
+     "ci95": null,
+     "note": "insufficient pairs for effect/CI"
+    }
+   },
+   "arms": [
+    "routed",
+    "primary"
+   ],
+   "n_pairs_total": 3,
+   "n_pairs_usable": 3
+  }
+ ]
+}

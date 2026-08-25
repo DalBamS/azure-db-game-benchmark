@@ -1,6 +1,6 @@
 # v1 vs v2 paired analysis
 
-Generated 2026-08-18T00:45:01.258227+00:00
+Generated 2026-08-25T22:10:33.876097+00:00
 
 ## C1 / S1 / 5000 arrivals/s  (v1 vs v2)
 
@@ -28,6 +28,33 @@ Repetition gate summary:
 - rep 2 v2: ok=True tps=5000 p99=18511us azmon=True inv=True
 - rep 3 v1: ok=True tps=5000 p99=25199us azmon=True inv=True
 - rep 3 v2: ok=True tps=5000 p99=64607us azmon=True inv=True
+
+## C3 / S1 / 5000 arrivals/s  (v1 vs v2)
+
+pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: none)
+
+| Outcome | n | v1 median | v2 median | v1 CV% | v2 CV% | Δ% (v2 vs v1, geo-mean) | 95% CI | note |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| Throughput (success TPS) | 3 | 5,000.0 | 5,000.0 | 0.0002 | 0.0018 | +0.00% | [-0.00%, +0.00%] | CI includes 0; n=3<5 (below protocol baseline) |
+| Latency p50 (us) | 3 | 3,711.0 | 2,573.0 | 4.9 | 0.8794 | -32.09% | [-36.19%, -29.20%] | v2 lower (better); n=3<5 (below protocol baseline) |
+| Latency p95 (us) | 3 | 20,799.0 | 28,831.0 | 2.0 | 13.6 | +30.16% | [+8.66%, +42.46%] | v2 higher (worse); n=3<5 (below protocol baseline) |
+| Latency p99 (us) | 3 | 27,455.0 | 40,639.0 | 6.6 | 14.0 | +41.95% | [+14.25%, +64.09%] | v2 higher (worse); n=3<5 (below protocol baseline) |
+| Latency p99.9 (us) | 3 | 79,679.0 | 55,167.0 | 73.0 | 12.8 | -44.62% | [-72.21%, +9.81%] | CI includes 0; n=3<5 (below protocol baseline) |
+| Error rate | 3 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+| Server read IOPS | 3 | 1,720.9 | 1,730.7 | 3.6 | 0.8464 | - | - |  |
+| Server write IOPS | 3 | 2,347.5 | 3,095.3 | 0.2502 | 0.5912 | - | - |  |
+| Buffer pool hit ratio | 3 | 0.9766 | 0.9765 | 0.0772 | 0.0234 | - | - |  |
+| Service time p99 (us, excl. queue) | 3 | 26,703.0 | 40,447.0 | 6.3 | 14.0 | +43.59% | [+14.97%, +64.80%] | v2 higher (worse); n=3<5 (below protocol baseline) |
+| Burst recovery time (s, S3 only) | 0 | - | - | - | - | - | - | insufficient pairs for effect/CI |
+| Dropped arrivals (queue overflow) | 3 | 0.0000 | 0.0000 | - | - | - | - | insufficient pairs for effect/CI |
+
+Repetition gate summary:
+- rep 1 v1: ok=True tps=5000 p99=28079us azmon=True inv=True
+- rep 1 v2: ok=True tps=5000 p99=32079us azmon=True inv=True
+- rep 2 v1: ok=True tps=5000 p99=24767us azmon=True inv=True
+- rep 2 v2: ok=True tps=5000 p99=40639us azmon=True inv=True
+- rep 3 v1: ok=True tps=5000 p99=27455us azmon=True inv=True
+- rep 3 v2: ok=True tps=5000 p99=41887us azmon=True inv=True
 
 ## C5 / S1 / 5000 arrivals/s  (v1 vs v2)
 
@@ -107,12 +134,12 @@ pairs: 3 usable of 3 (hard-gate-failed pairs excluded; soft gates: none)
 | Dropped arrivals (queue overflow) | 3 | 0.0664 | 0.0380 | 6.1 | 5.3 | -44.28% | [-50.78%, -40.59%] | v2 lower (better); n=3<5 (below protocol baseline) |
 
 Repetition gate summary:
-- rep 1 v1: ok=True tps=2598 p99=4464639us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G5_errors', 'G4_queue_delay'])
-- rep 1 v2: ok=True tps=2701 p99=4020223us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G5_errors', 'G4_queue_delay'])
-- rep 2 v1: ok=True tps=2620 p99=4370431us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G5_errors', 'G4_queue_delay'])
-- rep 2 v2: ok=True tps=2694 p99=4032511us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G5_errors', 'G4_queue_delay'])
-- rep 3 v1: ok=True tps=2614 p99=4390911us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G5_errors', 'G4_queue_delay'])
-- rep 3 v2: ok=True tps=2690 p99=4038655us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G5_errors', 'G4_queue_delay'])
+- rep 1 v1: ok=True tps=2598 p99=4464639us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G4_queue_delay', 'G5_errors'])
+- rep 1 v2: ok=True tps=2701 p99=4020223us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G4_queue_delay', 'G5_errors'])
+- rep 2 v1: ok=True tps=2620 p99=4370431us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G4_queue_delay', 'G5_errors'])
+- rep 2 v2: ok=True tps=2694 p99=4032511us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G4_queue_delay', 'G5_errors'])
+- rep 3 v1: ok=True tps=2614 p99=4390911us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G4_queue_delay', 'G5_errors'])
+- rep 3 v2: ok=True tps=2690 p99=4038655us azmon=True inv=True FAILED: ['G4_queue_delay', 'G5_errors'] (soft-gate warnings: ['G4_queue_delay', 'G5_errors'])
 
 ## C7 / S1 / 5000 arrivals/s  (v1 vs v2)
 

@@ -42,3 +42,4 @@
 - 08-25 01:20 gamebench에 30분 주기 체크포인트 추가(-checkpoint), soak 재시작(23h, C7/S1@5000). HZ는 8 vCore로는 성공 → 16 재시도(45분 기한, 실패 시 PG를 D8ds로 내려 8vCore 동급 비교로 전환). v2br 재생성 진행, 완료 시 C4(복제본 라우팅, RO_DSN) 자동 실행 예약.
 - 08-25 06:12 로컬 4h 추가 멈춤. 대용량 셀 rep1만 존재 확인 → rep2-3 setsid 재기동. v2br 생성이 InternalServerError로 반복 실패(Tracking 56d20eb6…) — SSD v2(PremiumV2 프리뷰 스토리지) 서버는 읽기 복제본 생성 미지원으로 판단, C4를 "v1 계열 복제본 라우팅 효과"(같은 서버에서 primary-only vs replica-routed 순차 3회)로 재정의.
 - 08-25 10:38 또 4h 로컬 멈춤. 대용량 rep2 완료 확인(rep3 루프 소실) → rep3 개별 setsid로 재실행. soak 정상(9.4h 경과, 체크포인트 정상). C4(v1 replica-effect) 시작.
+- 08-26 06:40 최종 수거·분석: soak 14.5h(체크포인트) — 지속 부하에서 양 arm 모두 열화(p95 1.13s/0.83s), v1 꼬리·최악치가 더 나쁨(p99 2.04s vs 1.21s, max 7.1s vs 2.4s), 오류율 ~1.85% 동반. C3 3/3, C4(v1 replica-effect) 3/3 — p99 −7.4%, primary read IOPS −66%. 대용량 92GiB: PG 3회 전부 G4/G5 탈락(스톨·p50 최대 11.6s, read IOPS 3~4.5k 디스크 한계), HZ 3회 모두 p99 3.9ms — 유효 쌍 0이나 비대칭 실패가 핵심 발견. KR 덱 v2(24장) 생성.
