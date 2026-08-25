@@ -122,6 +122,7 @@ func main() {
 	burstAt := fs.Int("burst-at", 0, "S3: burst start second (0=off)")
 	burstSec := fs.Int("burst-sec", 0, "S3: burst length seconds")
 	burstFactor := fs.Float64("burst-factor", 1, "S3: rate multiplier during burst")
+	checkpoint := fs.String("checkpoint", "", "periodic partial-snapshot path for long runs (>=1h)")
 	// knee flags
 	steps := fs.String("steps", "16,32,64,128,256,512", "closed-loop concurrency steps")
 	stepSec := fs.Int("step-sec", 120, "seconds per step (after 30s warmup)")
@@ -261,7 +262,7 @@ func main() {
 		}
 		cfg := bench.RunConfig{Mode: *mode, Scenario: *scenario, TargetRate: *rate, Workers: *workers, WarmupSec: *warmup, WarmupMaxSec: *warmupMax, SteadyCVPct: *steadyCV,
 			MeasureSec: *measure, QueueSec: *queueSec, StmtTimeoutMs: *stmtTimeout, Accounts: *accounts, Slots: *slots, HotKeys: hk, HotProb: hp, Seed: *seed,
-			NICLimitBps: *nic, Label: *label, BurstAtSec: *burstAt, BurstSec: *burstSec, BurstFactor: *burstFactor}
+			NICLimitBps: *nic, Label: *label, BurstAtSec: *burstAt, BurstSec: *burstSec, BurstFactor: *burstFactor, CheckpointPath: *checkpoint}
 		r := &bench.Runner{DB: db, RODB: rodb, Cfg: cfg, Mix: mix, Log: logf, Env: env, Fetch: fetch}
 		res, err := r.Run(ctx)
 		if err != nil {

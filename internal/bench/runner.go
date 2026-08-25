@@ -3,6 +3,8 @@ package bench
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
+	"os"
 	"errors"
 	"fmt"
 	"math"
@@ -40,6 +42,7 @@ type RunConfig struct {
 	BurstAtSec  int     `json:"burst_at_sec"`
 	BurstSec    int     `json:"burst_sec"`
 	BurstFactor float64 `json:"burst_factor"`
+	CheckpointPath string `json:"checkpoint_path,omitempty"`
 }
 
 type OpResult struct {
@@ -304,6 +307,30 @@ func (r *Runner) Run(ctx context.Context) (*RunResult, error) {
 	statusSampler.Start(ctx)
 	host := NewHostSampler(5 * time.Second)
 	host.Start()
+
+	// periodic checkpoint for very long runs: every 30 min dump a partial snapshot so an
+	// external shutdown does not lose the whole measurement
+	if cfg.MeasureSec >= 3600 && cfg.CheckpointPath != "" {
+		go func() {
+			t := time.NewTicker(30 * time.Minute)
+			defer t.Stop()
+			for {
+				select {
+				case <-runCtx.Done():
+					return
+				case <-t.C:
+					snap := map[string]any{
+						"t": time.Now().UTC(), "label": cfg.Label,
+						"overall": OpResult{Attempts: overall.attempts.Load(), Success: overall.success.Load(), Errors: overall.errors.Load(), Timeouts: overall.timeouts.Load(), Latency: overall.lat.Snapshot()},
+						"queue_delay": queueHist.Snapshot(), "service_time": serviceHist.Snapshot(),
+					}
+					if b, err := json.MarshalIndent(snap, "", " "); err == nil {
+						_ = os.WriteFile(cfg.CheckpointPath, b, 0o644)
+					}
+				}
+			}
+		}()
+	}
 
 	// per-second recorder + steady-state detector
 	var secMu sync.Mutex

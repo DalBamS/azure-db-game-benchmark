@@ -37,3 +37,6 @@
 - 08-24 01:20 as-provisioned IOPS 셀 취소: 128GiB에서 Premium SSD v1의 무료 IOPS가 5,037로 보고됨(플랫폼이 500 설정 거부) → 이 스토리지 크기에서는 기본 구성 = same-IOPS라 별도 셀이 무의미. 보고서에 기록.
 - 08-24 01:37 로컬 PC 멈춤 여파로 이 머신→VM SSH(2222) 타임아웃. VM 측 작업(setsid/nohup)은 영향 없음 — run-command로 우회 운영.
 - 08-24 02:11 HorizonDB 스케일 종료가 vCores=2로 확인(16 PATCH가 선행 축소 작업에 밀림) → 16 재요청. PG 쪽 1,000만 계정 적재는 run-command로 먼저 시작. MySQL 읽기 복제본(v1br/v2br, C4용) 생성 시작.
+- 08-25 00:49 로컬 PC 장시간 멈춤(약 22h) + MCAPS 야간 VM 자동종료로 피해 확인: soak는 15.9h 진행 후 사망(클라이언트 데이터 유실, JSON은 종료 시에만 기록), PG 1,000만 적재는 어제 03:00 UTC 완료(무사), v2br 생성 실패, HZ 16 vCore 스케일이 두 번째도 vCores=2로 종료.
+- 08-25 01:10 복구: VM 3대 재시작 + auto-shutdown off 시도, 이 머신→VM SSH 불능 지속(443도 차단) → run-command 운영으로 전환. 스토리지 SAS 전송은 MCAPS 정책(publicNetworkAccess 강제 Disabled)으로 불가 → 소스 base64를 run-command로 넣어 VM에서 Go 직접 빌드(양쪽 VM).
+- 08-25 01:20 gamebench에 30분 주기 체크포인트 추가(-checkpoint), soak 재시작(23h, C7/S1@5000). HZ는 8 vCore로는 성공 → 16 재시도(45분 기한, 실패 시 PG를 D8ds로 내려 8vCore 동급 비교로 전환). v2br 재생성 진행, 완료 시 C4(복제본 라우팅, RO_DSN) 자동 실행 예약.
