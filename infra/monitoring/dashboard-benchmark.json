@@ -21,7 +21,7 @@
    "targets": [
     {
      "refId": "A",
-     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_reads\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_reads\") |> derivative(unit:1s, nonNegative:true) |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"v1\",\"v2\"])"
     }
    ],
    "options": {
@@ -40,9 +40,7 @@
     }
    },
    "fieldConfig": {
-    "defaults": {
-     "displayName": "${__field.labels.arm}"
-    },
+    "defaults": {},
     "overrides": [
      {
       "matcher": {
@@ -89,7 +87,7 @@
    "targets": [
     {
      "refId": "A",
-     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_writes\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_writes\") |> derivative(unit:1s, nonNegative:true) |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"v1\",\"v2\"])"
     }
    ],
    "options": {
@@ -108,9 +106,7 @@
     }
    },
    "fieldConfig": {
-    "defaults": {
-     "displayName": "${__field.labels.arm}"
-    },
+    "defaults": {},
     "overrides": [
      {
       "matcher": {
@@ -157,7 +153,7 @@
    "targets": [
     {
      "refId": "A",
-     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"questions\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"questions\") |> derivative(unit:1s, nonNegative:true) |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"v1\",\"v2\"])"
     }
    ],
    "options": {
@@ -176,9 +172,7 @@
     }
    },
    "fieldConfig": {
-    "defaults": {
-     "displayName": "${__field.labels.arm}"
-    },
+    "defaults": {},
     "overrides": [
      {
       "matcher": {
@@ -225,7 +219,7 @@
    "targets": [
     {
      "refId": "A",
-     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"threads_running\") |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"threads_running\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"v1\",\"v2\"])"
     }
    ],
    "options": {
@@ -244,9 +238,7 @@
     }
    },
    "fieldConfig": {
-    "defaults": {
-     "displayName": "${__field.labels.arm}"
-    },
+    "defaults": {},
     "overrides": [
      {
       "matcher": {
@@ -293,7 +285,7 @@
    "targets": [
     {
      "refId": "A",
-     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_buffer_pool_reads\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_buffer_pool_reads\") |> derivative(unit:1s, nonNegative:true) |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"v1\",\"v2\"])"
     }
    ],
    "options": {
@@ -312,9 +304,7 @@
     }
    },
    "fieldConfig": {
-    "defaults": {
-     "displayName": "${__field.labels.arm}"
-    },
+    "defaults": {},
     "overrides": [
      {
       "matcher": {
@@ -396,7 +386,7 @@
    "targets": [
     {
      "refId": "A",
-     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"net\" and (r._field==\"bytes_recv\" or r._field==\"bytes_sent\") and r.host==\"bench-vm\" and r.interface!=\"lo\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"_field\"])"
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"net\" and (r._field==\"bytes_recv\" or r._field==\"bytes_sent\") and r.host==\"bench-vm\" and r.interface!=\"lo\") |> derivative(unit:1s, nonNegative:true) |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"_field\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"bytes_recv\",\"bytes_sent\"])"
     }
    ],
    "options": {
@@ -420,5 +410,5 @@
    }
   }
  ],
- "version": 3
+ "version": 4
 }
