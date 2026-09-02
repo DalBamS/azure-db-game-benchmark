@@ -1,24 +1,125 @@
 {
-  "title": "DB Benchmark - v1 vs v2 (live)",
-  "uid": "dbbench-live",
-  "timezone": "utc",
-  "refresh": "10s",
-  "time": {"from": "now-30m", "to": "now"},
-  "schemaVersion": 39,
-  "panels": [
-    {"type": "timeseries", "title": "InnoDB physical read IOPS (Innodb_data_reads/s)", "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_reads\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"}]},
-    {"type": "timeseries", "title": "InnoDB write IOPS (Innodb_data_writes/s)", "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_writes\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"}]},
-    {"type": "timeseries", "title": "Questions/s", "gridPos": {"x": 0, "y": 8, "w": 8, "h": 7},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"questions\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"}]},
-    {"type": "timeseries", "title": "Threads running", "gridPos": {"x": 8, "y": 8, "w": 8, "h": 7},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"threads_running\") |> keep(columns:[\"_time\",\"_value\",\"arm\"])"}]},
-    {"type": "timeseries", "title": "Buffer pool physical reads/s", "gridPos": {"x": 16, "y": 8, "w": 8, "h": 7},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_buffer_pool_reads\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"}]},
-    {"type": "timeseries", "title": "Bench VM CPU % (usage_idle inverted)", "gridPos": {"x": 0, "y": 15, "w": 12, "h": 7},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"cpu\" and r._field==\"usage_idle\" and r.host==\"bench-vm\") |> map(fn:(r)=> ({r with _value: 100.0 - r._value})) |> keep(columns:[\"_time\",\"_value\"])"}]},
-    {"type": "timeseries", "title": "Bench VM network bytes/s", "gridPos": {"x": 12, "y": 15, "w": 12, "h": 7},
-     "targets": [{"refId": "A", "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"net\" and (r._field==\"bytes_recv\" or r._field==\"bytes_sent\") and r.host==\"bench-vm\" and r.interface!=\"lo\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"_field\"])"}]}
-  ]
+ "title": "DB Benchmark - v1 vs v2 (live)",
+ "uid": "dbbench-live",
+ "timezone": "utc",
+ "refresh": "10s",
+ "time": {
+  "from": "now-30m",
+  "to": "now"
+ },
+ "schemaVersion": 39,
+ "panels": [
+  {
+   "type": "timeseries",
+   "title": "InnoDB physical read IOPS (Innodb_data_reads/s)",
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_reads\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "InnoDB write IOPS (Innodb_data_writes/s)",
+   "gridPos": {
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_data_writes\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Questions/s",
+   "gridPos": {
+    "x": 0,
+    "y": 8,
+    "w": 8,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"questions\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Threads running",
+   "gridPos": {
+    "x": 8,
+    "y": 8,
+    "w": 8,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"threads_running\") |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Buffer pool physical reads/s",
+   "gridPos": {
+    "x": 16,
+    "y": 8,
+    "w": 8,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"mysql\" and r._field==\"innodb_buffer_pool_reads\") |> derivative(unit:1s, nonNegative:true) |> group(columns:[\"arm\"]) |> keep(columns:[\"_time\",\"_value\",\"arm\"])"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Bench VM CPU % (usage_idle inverted)",
+   "gridPos": {
+    "x": 0,
+    "y": 15,
+    "w": 12,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"cpu\" and r._field==\"usage_idle\" and r.host==\"bench-vm\") |> map(fn:(r)=> ({r with _value: 100.0 - r._value})) |> keep(columns:[\"_time\",\"_value\"])"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Bench VM network bytes/s",
+   "gridPos": {
+    "x": 12,
+    "y": 15,
+    "w": 12,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"net\" and (r._field==\"bytes_recv\" or r._field==\"bytes_sent\") and r.host==\"bench-vm\" and r.interface!=\"lo\") |> derivative(unit:1s, nonNegative:true) |> keep(columns:[\"_time\",\"_value\",\"_field\"])"
+    }
+   ]
+  }
+ ]
 }
