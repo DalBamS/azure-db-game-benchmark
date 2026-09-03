@@ -47,3 +47,4 @@
 - 09-02 v1 스토리지 + v6 컴퓨팅 조합을 v1b로 실측: `UnsupportedStorageSkuForV6VmSku — v6 SKU is only supported with Premium SSDv2`. 컴퓨팅 세대 confound는 플랫폼 강제라 실험으로 제거 불가함을 에러 코드로 확정 (보고서 confound 표 근거 보강).
 - 09-04 종료 전 재현성 검증: infra/expB/main.bicep 신규 작성(MySQL v1/v2 쌍 + 벤치VM, 프리뷰 API·storageSku 포함) — `az deployment group validate` Succeeded. expA bicep도 validate Succeeded. Go/py 전체 빌드 통과. README 재현 절차 작성. 이후 전체 리소스 삭제.
 - 09-04 리소스 삭제 완료: rg-expa-pg-hz 전체(PG·HorizonDB·벤치VM·네트워크), MySQL 5대(v1br→v1b·v2b·v1·v2), 벤치·모니터링 VM+NIC+디스크+PIP, 전송용 스토리지, 임시 NSG 규칙(allow-all 포함). 잔존: 이전 실험(azure-mysql-ssd-benchmark) 소유의 공유 인프라(Key Vault, vnet/NAT, Managed Grafana, identity, private DNS) — 이 프로젝트가 만들지 않아 보존, 필요 시 별도 삭제.
+- 09-04 mysql-storage-benchmark RG(공유 인프라 포함 14개)도 사용자 승인 하에 전체 삭제. rg-expa-pg-hz와 함께 삭제 완료 확인 — 프로젝트 관련 Azure 리소스 0개. Key Vault는 90일 soft-delete 후 자동 소멸.
