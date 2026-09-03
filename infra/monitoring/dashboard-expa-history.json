@@ -1,0 +1,482 @@
+{
+ "title": "expA history - PostgreSQL vs HorizonDB",
+ "uid": "expa-history",
+ "timezone": "utc",
+ "schemaVersion": 39,
+ "time": {
+  "from": "2026-08-17T15:00:00.000Z",
+  "to": "2026-08-25T12:00:00.000Z"
+ },
+ "panels": [
+  {
+   "type": "timeseries",
+   "title": "\uc131\uacf5 TPS (\ucd08\ub2f9 \ucc98\ub9ac)",
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_client\" and r._field==\"success\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "p99 \uc751\ub2f5\uc2dc\uac04 (ms, 1\ucd08\ucc3d, \ub85c\uadf8\ucd95)",
+   "gridPos": {
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_client\" and r._field==\"p99_ms\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "ms",
+     "custom": {
+      "scaleDistribution": {
+       "type": "log",
+       "log": 10
+      }
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "\uc11c\ubc84 \uc77d\uae30 IOPS",
+   "gridPos": {
+    "x": 0,
+    "y": 8,
+    "w": 8,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_server\" and r._field==\"read_iops\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "\uc11c\ubc84 \uc4f0\uae30 IOPS",
+   "gridPos": {
+    "x": 8,
+    "y": 8,
+    "w": 8,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_server\" and r._field==\"write_iops\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "\ucee4\ubc0b/s (\uc11c\ubc84)",
+   "gridPos": {
+    "x": 16,
+    "y": 8,
+    "w": 8,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_server\" and r._field==\"commits_ps\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "\ud074\ub77c\uc774\uc5b8\ud2b8 \ub300\uae30\uc5f4 \uae38\uc774",
+   "gridPos": {
+    "x": 0,
+    "y": 15,
+    "w": 12,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_client\" and r._field==\"queue_len\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "\uc624\ub958/s",
+   "gridPos": {
+    "x": 12,
+    "y": 15,
+    "w": 12,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "query": "from(bucket:\"bench\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn:(r)=> r._measurement==\"bench_client\" and r._field==\"errors\") |> group() |> pivot(rowKey:[\"_time\"], columnKey:[\"arm\"], valueColumn:\"_value\") |> keep(columns:[\"_time\",\"postgres\",\"horizon\"])"
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true,
+     "calcs": [
+      "mean",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "postgres"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#1f77b4"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "horizon"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#d62728"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}
